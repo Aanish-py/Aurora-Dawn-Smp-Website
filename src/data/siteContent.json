@@ -1,0 +1,85 @@
+{
+    "joinedPlayers": "225+",
+    "announcements": [
+        {
+            "id": 1,
+            "title": "The Frostfire Expansion: A New Era Begins",
+            "category": "Updates",
+            "date": "Jan 28, 2026",
+            "author": "Admin Aurora",
+            "excerpt": "Explore the vast new Frostfire peaks, featuring custom mobs, unique loot tables, and a temperature survival mechanic that will challenge even the veterans.",
+            "content": "We are excited to announce the Frostfire Expansion! This massive update brings a completely new biome to the SMP, filled with icy peaks and molten caves. Players will need to manage their temperature to survive, while discovering unique loot found nowhere else. The update also includes 5 new custom mobs and a dedicated quest line to unlock the 'Frostfire Crown'.",
+            "image": "/src/assets/news-hero.png",
+            "featured": true
+        },
+        {
+            "id": 2,
+            "title": "Community Spotlight: The Great Cathedral",
+            "category": "Community",
+            "date": "Jan 25, 2026",
+            "author": "Mod Pixel",
+            "excerpt": "Take a tour through 'Luminara', a massive cathedral built entirely in survival mode over the last 3 months by our talented community members.",
+            "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop",
+            "featured": false
+        },
+        {
+            "id": 3,
+            "title": "Devblog #14: Performance & Persistence",
+            "category": "Devblog",
+            "date": "Jan 20, 2026",
+            "author": "Lead Dev",
+            "excerpt": "We're diving deep into our new database migration and how we've achieved a consistent 20 TPS even with 100+ players online simultaneously.",
+            "image": "https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=2031&auto=format&fit=crop",
+            "featured": false
+        },
+        {
+            "id": 4,
+            "title": "Upcoming Lunar Festival Event",
+            "category": "Events",
+            "date": "Jan 18, 2026",
+            "author": "Event Team",
+            "excerpt": "Join us this weekend for the Lunar Festival! Exclusive cosmetics, double XP, and a server-wide treasure hunt in the main spawn city.",
+            "image": "https://images.unsplash.com/photo-1467810563316-b5476525c0f9?q=80&w=2069&auto=format&fit=crop",
+            "featured": false
+        },
+        {
+            "id": 5,
+            "title": "Security Update: New Anti-Cheat Measures",
+            "category": "Updates",
+            "date": "Jan 15, 2026",
+            "author": "Security Team",
+            "excerpt": "We've deployed an enhanced version of our custom anti-cheat. Play fair and enjoy a safe environment for everyone in the Aurora SMP.",
+            "image": "https://images.unsplash.com/photo-1510511459019-5dee997ddfdf?q=80&w=2070&auto=format&fit=crop",
+            "featured": false
+        },
+        {
+            "id": 6,
+            "title": "New Custom Enchants: Phase II",
+            "category": "Updates",
+            "date": "Jan 10, 2026",
+            "author": "Content Team",
+            "excerpt": "Ten new enchantments have been added! From 'Soul Bound' to 'Inferno', discover how these new powers can change your gameplay.",
+            "content": "Phase II of our Custom Enchants update is finally here! We've added 10 brand-new enchantments that can be obtained through the Enchantment Table or special villager trades. Highlight enchants include 'Soul Bound' (keep your item on death once) and 'Inferno' (arrows leave a trail of fire). Check the /enchants menu in-game for full details.",
+            "image": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1968&auto=format&fit=crop",
+            "featured": false
+        }
+    ],
+    "marquee": [
+        "Welcome to Aurora Dawn SMP! Join our Discord community today!",
+        "New Server Event: 'The Void Walker' starts this Friday at 8 PM EST!",
+        "Vote for the server to receive exclusive in-game rewards!",
+        "Maintenance scheduled for Sunday 3 AM - 5 AM EST."
+    ],
+    "socialLinks": [
+        { "name": "Discord", "url": "https://dsc.gg/AuroraDawn", "platform": "Discord" },
+        { "name": "YouTube", "url": "https://youtube.com/@auroradawnsmp?si=rAe_1-bVoM9GzuTz", "platform": "YouTube" },
+        { "name": "TikTok", "url": "https://www.tiktok.com/@auroradawnsmps3?_r=1&_t=ZM-92ZZsHQdxFr", "platform": "TikTok" },
+        { "name": "Reddit", "url": "https://www.reddit.com/u/ProfessionalHuman290/s/liRGOKz90s", "platform": "Reddit" },
+        { "name": "Spotify", "url": "https://open.spotify.com/playlist/39wyaWCbOTj6u9uOHytWCY?si=Z15sx1VuR9y4aDBosnGvVA", "platform": "Spotify" }
+    ],
+    "serverInfo": {
+        "javaIP": "play.auroradawn.net",
+        "bedrockIP": "play.auroradawn.net:19132",
+        "region": "Asia - Singapore"
+    }
+}

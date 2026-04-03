@@ -1,0 +1,207 @@
+/* Aurora Dawn SMP - Main Stylesheet */
+
+/* ----- BASE STYLES ----- */
+body {
+    background-color: #0B1026;
+    color: #E0E7FF;
+    overflow-x: hidden;
+    font-family: 'Outfit', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* ----- SCROLLBAR HIDING ----- */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* ----- HERO MASK ----- */
+.hero-mask {
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+
+/* ----- CUSTOM ANIMATIONS ----- */
+@keyframes aurora-flow {
+    0% {
+        background-position: 50% 50%, 50% 50%;
+    }
+    100% {
+        background-position: 350% 50%, 350% 50%;
+    }
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(0, 210, 160, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(0, 210, 160, 0.6);
+    }
+}
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    0% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes wiggle {
+    0%, 100% {
+        transform: rotate(-3deg);
+    }
+    50% {
+        transform: rotate(3deg);
+    }
+}
+
+/* ----- UTILITY ANIMATIONS ----- */
+.animate-aurora-flow {
+    animation: aurora 20s linear infinite;
+}
+
+.animate-marquee {
+    animation: marquee 25s linear infinite;
+}
+
+.animate-fade-in {
+    animation: fadeIn 1s ease-in-out;
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+    animation: float 8s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+    animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.animate-slide-up {
+    animation: slideUp 0.6s ease-out;
+}
+
+.animate-slide-down {
+    animation: slideDown 0.6s ease-out;
+}
+
+.animate-wiggle {
+    animation: wiggle 1s ease-in-out infinite;
+}
+
+/* ----- GRADIENT TEXT UTILITIES ----- */
+.gradient-text {
+    background: linear-gradient(to right, #00D2A0, #A364FF, #4B9EFF);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ----- GLASS MORPHISM ----- */
+.glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ----- CUSTOM SELECTION ----- */
+::selection {
+    background: #00D2A0;
+    color: #0B1026;
+}
+
+::-moz-selection {
+    background: #00D2A0;
+    color: #0B1026;
+}
+
+/* ----- SMOOTH SCROLLING ----- */
+html {
+    scroll-behavior: smooth;
+}
+
+/* ----- FOCUS STATES ----- */
+a:focus,
+button:focus {
+    outline: 2px solid #00D2A0;
+    outline-offset: 2px;
+}
+
+/* ----- RESPONSIVE UTILITIES ----- */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+}
+
+/* ----- LOADING STATES ----- */
+.loading-shimmer {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
