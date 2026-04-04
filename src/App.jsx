@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -8,14 +8,15 @@ import './index.css';
 import LiquidEther from './components/LiquidEther';
 import SplashCursor from './components/SplashCursor';
 import PageLoader from './components/PageLoader';
+import { lazyWithRetry } from './utils/lazyLoading';
 
 // Lazy load pages
-const Home = lazy(() => import('./pages/Home'));
-const AnnouncementsPage = lazy(() => import('./pages/AnnouncementsPage'));
-const RulesPage = lazy(() => import('./pages/RulesPage'));
-const JoinPage = lazy(() => import('./pages/JoinPage'));
-const LorePage = lazy(() => import('./pages/LorePage'));
-const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const Home = lazyWithRetry(() => import('./pages/Home'));
+const AnnouncementsPage = lazyWithRetry(() => import('./pages/AnnouncementsPage'));
+const RulesPage = lazyWithRetry(() => import('./pages/RulesPage'));
+const JoinPage = lazyWithRetry(() => import('./pages/JoinPage'));
+const LorePage = lazyWithRetry(() => import('./pages/LorePage'));
+const AdminDashboard = lazyWithRetry(() => import('./pages/AdminDashboard'));
 
 
 

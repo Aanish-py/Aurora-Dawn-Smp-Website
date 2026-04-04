@@ -13,6 +13,22 @@ class ErrorBoundary extends React.Component {
     componentDidCatch(error, errorInfo) {
         this.setState({ error, errorInfo });
         console.error("Uncaught Error:", error, errorInfo);
+
+        // Check for chunk loading errors (typical of new deployments)
+        const errorText = error?.message || error?.toString() || '';
+        const isChunkError = /Failed to fetch dynamically imported module|ChunkLoadError|Loading chunk/i.test(errorText);
+        
+        if (isChunkError) {
+            const hasRefreshed = sessionStorage.getItem('error-boundary-refresh-attempted') === 'true';
+            if (!hasRefreshed) {
+                sessionStorage.setItem('error-boundary-refresh-attempted', 'true');
+                console.warn("Chunk loading error detected. Refreshing page to recover...");
+                window.location.reload();
+            }
+        } else {
+            // Reset for non-chunk errors on normal renders
+            sessionStorage.removeItem('error-boundary-refresh-attempted');
+        }
     }
 
     render() {
