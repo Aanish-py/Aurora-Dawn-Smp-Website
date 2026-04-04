@@ -24,17 +24,26 @@ const AdminDashboard = () => {
         }
     }, [content]);
 
-    const handleSave = () => {
+    const handleSave = async () => {
         setIsSaving(true);
         setSaveStatus(null);
         
-        // Simulate save delay
-        setTimeout(() => {
-            updateContent(localContent);
+        try {
+            // Signal global sync to Cloudflare KV
+            const success = await updateContent(localContent, true);
+            
+            if (success) {
+                setSaveStatus('success');
+            } else {
+                setSaveStatus('error');
+            }
+        } catch (err) {
+            console.error('Save failed:', err);
+            setSaveStatus('error');
+        } finally {
             setIsSaving(false);
-            setSaveStatus('success');
             setTimeout(() => setSaveStatus(null), 3000);
-        }, 800);
+        }
     };
 
     const handleLogout = () => {
