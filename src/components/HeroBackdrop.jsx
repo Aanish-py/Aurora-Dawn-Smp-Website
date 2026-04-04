@@ -1,5 +1,5 @@
 import GasCursor from './GasCursor';
-import heroBg from '../assets/aurora-hero-v3.jpg';
+const heroBg = '/aurora_stock_photos/aurora-hero-v3.jpg';
 
 const HeroBackdrop = () => {
     return (
@@ -12,7 +12,7 @@ const HeroBackdrop = () => {
             <div className="fixed inset-0 z-0">
                 <img
                     src={heroBg}
-                    alt="Hero Background"
+                    alt="Aurora Dawn SMP Dramatic Minecraft Landscape"
                     className="w-full h-full object-cover"
                 />
                 {/* Tint overlay - Adjust opacity as needed */}

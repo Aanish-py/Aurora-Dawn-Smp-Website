@@ -26,7 +26,7 @@ const AnnouncementRow = ({ news, index, onClick }) => {
             {/* Icon Group */}
             <div className="shrink-0 w-12 h-12 rounded bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden">
                 {news.image ? (
-                    <img src={news.image} alt="" className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" />
+                    <img src={news.image} alt={news.title} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" />
                 ) : (
                     <Calendar className="w-6 h-6 text-white/20" />
                 )}

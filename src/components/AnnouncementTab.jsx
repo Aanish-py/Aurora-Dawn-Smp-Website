@@ -1,10 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Bell, Sparkles } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 
 import { useContent } from '../context/ContentContext';
 
 const AnnouncementTab = () => {
+    const location = useLocation();
+    const isHomePage = location.pathname === '/';
+    
     const [visible, setVisible] = React.useState(true);
     const [scrolled, setScrolled] = React.useState(false);
     const [lastScrollY, setLastScrollY] = React.useState(0);
@@ -27,6 +31,9 @@ const AnnouncementTab = () => {
     const { content } = useContent();
     const announcements = content.marquee || [];
 
+    // Only render on the home page
+    if (!isHomePage) return null;
+
     return (
         <motion.div
             initial={{ y: -100, opacity: 0 }}
@@ -35,49 +42,57 @@ const AnnouncementTab = () => {
                 opacity: visible ? 1 : 0
             }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className={`fixed ${scrolled ? 'top-20' : 'top-24'} left-0 right-0 z-40 transition-all duration-300 overflow-hidden bg-gradient-to-r from-aurora-dark via-[#1a1f3c] to-aurora-dark border-b border-white/10 shadow-lg`}
+            className={`fixed ${scrolled ? 'top-20' : 'top-24'} left-0 right-0 z-40 transition-all duration-300 overflow-hidden bg-[#0a0a0c]/80 backdrop-blur-md border-b border-white/5 shadow-2xl`}
         >
-            <div className="absolute inset-0 bg-aurora-green/5 animate-pulse pointer-events-none"></div>
+            <div className="absolute inset-0 bg-aurora-green/2 animate-pulse pointer-events-none"></div>
 
-            <div className="max-w-[1920px] mx-auto flex items-center h-14 px-6">
+            <div className="max-w-[1920px] mx-auto flex items-center h-12 px-6">
                 {/* Left Icon Badge */}
-                <div className="hidden md:flex items-center gap-2.5 px-4 py-1.5 mr-6 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm shrink-0">
-                    <Bell className="w-4 h-4 text-aurora-green" />
-                    <span className="text-sm font-bold font-heading text-white uppercase tracking-wider">Updates</span>
+                <div className="hidden md:flex items-center gap-2 px-3 py-1 mr-6 rounded-md bg-white/5 border border-white/5 backdrop-blur-sm shrink-0">
+                    <Bell className="w-3.5 h-3.5 text-aurora-green" />
+                    <span className="text-[10px] font-black font-heading text-white/60 uppercase tracking-[0.2em]">Live Status</span>
                 </div>
 
                 {/* Marquee Content */}
-                <div className="flex-1 overflow-hidden relative mask-linear-gradient flex items-center">
+                <div className="flex-1 overflow-hidden relative flex items-center h-full">
                     <motion.div
                         className="flex whitespace-nowrap"
                         animate={{ x: ["0%", "-50%"] }}
                         transition={{
                             repeat: Infinity,
                             repeatType: "loop",
-                            duration: 40,
+                            duration: 50,
                             ease: "linear"
                         }}
                     >
                         {/* Render content twice for seamless loop */}
                         {[...announcements, ...announcements].map((text, i) => (
-                            <div key={i} className="flex items-center mx-8">
-                                <Sparkles className="w-4 h-4 text-aurora-blue mr-3 opacity-70" />
-                                <span className="text-base font-medium text-aurora-text/90 tracking-wide hover:text-white transition-colors cursor-default">
+                            <div key={i} className="flex items-center mx-10">
+                                <Sparkles className="w-3.5 h-3.5 text-aurora-green/40 mr-4 shrink-0" />
+                                <span className="text-xs font-bold text-white/50 tracking-[0.1em] uppercase hover:text-white transition-colors cursor-default">
                                     {text}
                                 </span>
-                                <span className="mx-8 text-white/10">•</span>
+                                <span className="mx-10 text-white/5 font-black">/ /</span>
                             </div>
                         ))}
                     </motion.div>
 
                     {/* Gradients to fade edges */}
-                    <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-aurora-dark to-transparent z-10 pointer-events-none"></div>
-                    <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-aurora-dark to-transparent z-10 pointer-events-none"></div>
+                    <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-[#0a0a0c] to-transparent z-10 pointer-events-none"></div>
+                    <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-[#0a0a0c] to-transparent z-10 pointer-events-none"></div>
                 </div>
 
                 {/* Right Call to Action */}
                 <div className="hidden md:flex shrink-0 ml-6">
-                    <a href="#" className="text-sm text-aurora-green hover:text-white transition-colors font-semibold">Join Discord &rarr;</a>
+                    <a 
+                        href="https://dsc.gg/AuroraDawn" 
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[10px] font-black uppercase tracking-widest text-aurora-green hover:text-white transition-all flex items-center gap-2 group px-4 py-2 bg-aurora-green/5 hover:bg-aurora-green/10 rounded-lg border border-aurora-green/20"
+                    >
+                        <span>Join Discord Community</span>
+                        <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
+                    </a>
                 </div>
             </div>
         </motion.div>

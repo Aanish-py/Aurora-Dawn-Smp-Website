@@ -14,8 +14,9 @@ const LorePage = () => {
             {/* Background Image Container */}
             <div className="fixed inset-0 z-0">
                 <img 
-                    src="/images/lore-bg.png" 
-                    alt="Lore Background" 
+                    src="/aurora_stock_photos/lore-bg.png" 
+                    alt="Aurora SMP Atmospheric Hero Landscape Background" 
+                    loading="lazy"
                     className="w-full h-full object-cover opacity-40 scale-105 animate-aurora-flow"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-aurora-dark via-aurora-dark/60 to-aurora-dark" />

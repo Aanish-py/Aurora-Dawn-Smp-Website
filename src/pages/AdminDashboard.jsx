@@ -55,7 +55,7 @@ const AdminDashboard = () => {
             author: "Admin",
             excerpt: "Write a short summary (~2 sentences) for the card view.",
             content: "Write the full announcement here. Use shift+enter for new paragraphs.",
-            image: "/aurora_stock_photos/2024-10-08_03.jpg",
+            image: "/aurora_stock_photos/2024-10-08_03.webp",
             featured: false
         };
         updateField('announcements', [newAnn, ...localContent.announcements]);
@@ -312,7 +312,7 @@ const AdminDashboard = () => {
                                                     news[idx].image = e.target.value;
                                                     updateField('announcements', news);
                                                 }}
-                                                placeholder="/aurora_stock_photos/your_image.jpg"
+                                                placeholder="/aurora_stock_photos/your_image.webp"
                                                 className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-xs text-white focus:border-aurora-green/50 outline-none"
                                             />
                                         </div>

@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { gsap } from 'gsap';
+import { motion, useAnimation } from 'framer-motion';
 
 function FlowingMenu({
     items = [],
@@ -32,12 +32,9 @@ function FlowingMenu({
 
 function MenuItem({ link, text, image, speed, textColor, marqueeBgColor, marqueeTextColor, borderColor, isFirst }) {
     const itemRef = useRef(null);
-    const marqueeRef = useRef(null);
-    const marqueeInnerRef = useRef(null);
-    const animationRef = useRef(null);
     const [repetitions, setRepetitions] = useState(4);
-
-    const animationDefaults = { duration: 0.6, ease: 'expo' };
+    const marqueeControls = useAnimation();
+    const marqueeInnerControls = useAnimation();
 
     const findClosestEdge = (mouseX, mouseY, width, height) => {
         const topEdgeDist = (mouseX - width / 2) ** 2 + mouseY ** 2;
@@ -47,11 +44,9 @@ function MenuItem({ link, text, image, speed, textColor, marqueeBgColor, marquee
 
     useEffect(() => {
         const calculateRepetitions = () => {
-            if (!marqueeInnerRef.current) return;
-            const marqueeContent = marqueeInnerRef.current.querySelector('.marquee-part');
-            if (!marqueeContent) return;
-            const contentWidth = marqueeContent.offsetWidth;
             const viewportWidth = window.innerWidth;
+            // Rough estimate of content width until ref is available
+            const contentWidth = text.length * 20 + 250; 
             const needed = Math.ceil(viewportWidth / contentWidth) + 2;
             setRepetitions(Math.max(4, needed));
         };
@@ -59,61 +54,35 @@ function MenuItem({ link, text, image, speed, textColor, marqueeBgColor, marquee
         calculateRepetitions();
         window.addEventListener('resize', calculateRepetitions);
         return () => window.removeEventListener('resize', calculateRepetitions);
-    }, [text, image]);
+    }, [text]);
 
-    useEffect(() => {
-        const setupMarquee = () => {
-            if (!marqueeInnerRef.current) return;
-            const marqueeContent = marqueeInnerRef.current.querySelector('.marquee-part');
-            if (!marqueeContent) return;
-            const contentWidth = marqueeContent.offsetWidth;
-            if (contentWidth === 0) return;
-
-            if (animationRef.current) {
-                animationRef.current.kill();
-            }
-
-            animationRef.current = gsap.to(marqueeInnerRef.current, {
-                x: -contentWidth,
-                duration: speed,
-                ease: 'none',
-                repeat: -1
-            });
-        };
-
-        // Small delay to ensure render
-        const timer = setTimeout(setupMarquee, 100);
-
-        // Also try again after image load if possible, or just a safe delay
-        return () => {
-            clearTimeout(timer);
-            if (animationRef.current) {
-                animationRef.current.kill();
-            }
-        };
-    }, [text, image, repetitions, speed]);
-
-    const handleMouseEnter = ev => {
-        if (!itemRef.current || !marqueeRef.current || !marqueeInnerRef.current) return;
+    const handleMouseEnter = async (ev) => {
+        if (!itemRef.current) return;
         const rect = itemRef.current.getBoundingClientRect();
         const edge = findClosestEdge(ev.clientX - rect.left, ev.clientY - rect.top, rect.width, rect.height);
 
-        gsap
-            .timeline({ defaults: animationDefaults })
-            .set(marqueeRef.current, { y: edge === 'top' ? '-101%' : '101%' }, 0)
-            .set(marqueeInnerRef.current, { y: edge === 'top' ? '101%' : '-101%' }, 0)
-            .to([marqueeRef.current, marqueeInnerRef.current], { y: '0%' }, 0);
+        const marqueeY = edge === 'top' ? '-101%' : '101%';
+        const innerY = edge === 'top' ? '101%' : '-101%';
+
+        // Set initial positions instantly
+        marqueeControls.set({ y: marqueeY });
+        marqueeInnerControls.set({ y: innerY });
+
+        // Animate to center
+        marqueeControls.start({ y: '0%', transition: { duration: 0.6, ease: [0.19, 1, 0.22, 1] } });
+        marqueeInnerControls.start({ y: '0%', transition: { duration: 0.6, ease: [0.19, 1, 0.22, 1] } });
     };
 
-    const handleMouseLeave = ev => {
-        if (!itemRef.current || !marqueeRef.current || !marqueeInnerRef.current) return;
+    const handleMouseLeave = (ev) => {
+        if (!itemRef.current) return;
         const rect = itemRef.current.getBoundingClientRect();
         const edge = findClosestEdge(ev.clientX - rect.left, ev.clientY - rect.top, rect.width, rect.height);
 
-        gsap
-            .timeline({ defaults: animationDefaults })
-            .to(marqueeRef.current, { y: edge === 'top' ? '-101%' : '101%' }, 0)
-            .to(marqueeInnerRef.current, { y: edge === 'top' ? '101%' : '-101%' }, 0);
+        const marqueeTargetY = edge === 'top' ? '-101%' : '101%';
+        const innerTargetY = edge === 'top' ? '101%' : '-101%';
+
+        marqueeControls.start({ y: marqueeTargetY, transition: { duration: 0.6, ease: [0.19, 1, 0.22, 1] } });
+        marqueeInnerControls.start({ y: innerTargetY, transition: { duration: 0.6, ease: [0.19, 1, 0.22, 1] } });
     };
 
     return (
@@ -123,7 +92,7 @@ function MenuItem({ link, text, image, speed, textColor, marqueeBgColor, marquee
             style={{ borderTop: isFirst ? 'none' : `1px solid ${borderColor}` }}
         >
             <a
-                className="flex items-center justify-center h-full relative cursor-pointer uppercase no-underline font-bold text-3xl md:text-5xl lg:text-6xl tracking-tighter"
+                className="flex items-center justify-center h-full relative cursor-pointer uppercase no-underline font-bold text-3xl md:text-5xl lg:text-6xl tracking-tighter z-10"
                 href={link}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
@@ -131,25 +100,43 @@ function MenuItem({ link, text, image, speed, textColor, marqueeBgColor, marquee
             >
                 {text}
             </a>
-            <div
-                className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none translate-y-[101%]"
-                ref={marqueeRef}
+            <motion.div
+                className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-20"
+                animate={marqueeControls}
+                initial={{ y: '101%' }}
                 style={{ backgroundColor: marqueeBgColor }}
             >
-                <div className="h-full w-fit flex items-center" ref={marqueeInnerRef}>
-                    {[...Array(repetitions)].map((_, idx) => (
-                        <div className="marquee-part flex items-center flex-shrink-0" key={idx} style={{ color: marqueeTextColor }}>
-                            <span className="whitespace-nowrap uppercase font-bold text-3xl md:text-5xl lg:text-6xl px-8 md:px-12">{text}</span>
-                            <div
-                                className="w-[150px] md:w-[250px] h-[60px] md:h-[100px] rounded-full bg-cover bg-center shrink-0 border-2 border-white/20"
-                                style={{ backgroundImage: `url(${image})` }}
-                            />
-                        </div>
-                    ))}
-                </div>
-            </div>
+                <motion.div 
+                    className="h-full w-fit flex items-center"
+                    animate={marqueeInnerControls}
+                    initial={{ y: '-101%' }}
+                >
+                    <motion.div
+                        className="flex"
+                        animate={{ x: [0, '-50%'] }}
+                        transition={{ 
+                            duration: speed * 2, 
+                            ease: "linear", 
+                            repeat: Infinity 
+                        }}
+                    >
+                        {[...Array(repetitions * 2)].map((_, idx) => (
+                            <div className="marquee-part flex items-center flex-shrink-0" key={idx} style={{ color: marqueeTextColor }}>
+                                <span className="whitespace-nowrap uppercase font-bold text-3xl md:text-5xl lg:text-6xl px-8 md:px-12">{text}</span>
+                                <div
+                                    className="w-[150px] md:w-[250px] h-[60px] md:h-[100px] rounded-full bg-cover bg-center shrink-0 border-2 border-white/20"
+                                    style={{ backgroundImage: `url(${image})` }}
+                                />
+                                {/* Hidden img tag to trigger lazy loading of the source */}
+                                <img src={image} alt={text} className="hidden" loading="lazy" />
+                            </div>
+                        ))}
+                    </motion.div>
+                </motion.div>
+            </motion.div>
         </div>
     );
 }
 
 export default FlowingMenu;
+

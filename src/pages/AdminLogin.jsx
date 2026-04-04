@@ -53,16 +53,17 @@ const AdminLogin = ({ onLogin }) => {
                             <label className="block text-[10px] font-black text-white/30 uppercase tracking-[0.2em] mb-3 ml-1">Access Key</label>
                             <div className="relative">
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20" />
-                                <input 
-                                    type="password"
-                                    value={password}
-                                    onChange={(e) => {
-                                        setPassword(e.target.value);
-                                        setError('');
-                                    }}
-                                    placeholder="Enter secure key..."
-                                    className="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-12 pr-4 text-white placeholder:text-white/10 focus:outline-none focus:border-aurora-green/50 transition-all font-medium"
-                                />
+                                    <input 
+                                        type="password"
+                                        value={password}
+                                        autoComplete="current-password"
+                                        onChange={(e) => {
+                                            setPassword(e.target.value);
+                                            setError('');
+                                        }}
+                                        placeholder="Enter secure key..."
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-12 pr-4 text-white placeholder:text-white/10 focus:outline-none focus:border-aurora-green/50 transition-all font-medium"
+                                    />
                             </div>
                             {error && (
                                 <motion.p 

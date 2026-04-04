@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Sparkles, LayoutGrid, List, X, Calendar, User, ChevronRight } from 'lucide-react';
 import AnnouncementRow from '../components/AnnouncementRow';
-import newsHero from '../assets/news-hero.png';
+const newsHero = '/aurora_stock_photos/news-hero.png';
 
 import { useContent } from '../context/ContentContext';
 
@@ -82,7 +82,7 @@ const AnnouncementsPage = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
-                    className="flex flex-col lg:flex-row items-center justify-between gap-6 mb-12 bg-[#1a1a1a] p-4 border border-white/5 rounded-lg"
+                    className="flex flex-col md:flex-row items-center justify-between gap-6 mb-12 bg-[#1a1a1a] p-4 border border-white/5 rounded-lg"
                 >
                     <div className="flex flex-wrap items-center gap-2">
                         {categories.map((cat, i) => (
@@ -101,17 +101,10 @@ const AnnouncementsPage = () => {
                         ))}
                     </div>
 
-                    {/* Pagination Mockup */}
-                    <div className="flex items-center gap-1.5 self-start lg:self-center">
-                        <button className="px-3 py-1.5 bg-aurora-green text-black text-xs font-black rounded hover:brightness-110">1</button>
-                        <button className="px-3 py-1.5 bg-black/40 border border-white/10 text-white/40 text-xs font-black rounded hover:bg-white/5 transition-colors">2</button>
-                        <button className="px-3 py-1.5 bg-black/40 border border-white/10 text-white/40 text-xs font-black rounded hover:bg-white/5 transition-colors">3</button>
-                        <span className="text-white/20 mx-1">...</span>
-                        <button className="px-3 py-1.5 bg-black/40 border border-white/10 text-white/40 text-xs font-black rounded hover:bg-white/5 transition-colors">45</button>
-                        <button className="px-4 py-1.5 bg-black/40 border border-white/10 text-white/40 text-xs font-black rounded hover:bg-white/5 transition-colors flex items-center gap-1 group/btn">
-                            Next
-                            <Sparkles className="w-3 h-3 group-hover/btn:text-aurora-blue transition-colors" />
-                        </button>
+                    {/* End of Archives indicator */}
+                    <div className="flex items-center gap-2 self-start md:self-center">
+                        <div className="w-2 h-2 rounded-full bg-aurora-green animate-pulse" />
+                        <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em]">Latest Chronicles</span>
                     </div>
                 </motion.div>
 

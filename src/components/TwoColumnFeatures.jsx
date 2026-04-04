@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
-const FeatureRow = ({ img, text, reverse = false }) => {
+const FeatureRow = ({ img, text, alt, reverse = false }) => {
     const ref = useRef(null);
     const { scrollYProgress } = useScroll({
         target: ref,
@@ -44,7 +44,8 @@ const FeatureRow = ({ img, text, reverse = false }) => {
                         whileHover={{ scale: 1.1 }}
                         transition={{ duration: 0.7 }}
                         src={img}
-                        alt="Feature"
+                        alt={alt}
+                        loading="lazy"
                         className="w-full h-auto object-cover"
                     />
                     {/* Overlay wash */}
@@ -86,7 +87,8 @@ const TwoColumnFeatures = () => {
             ></motion.div>
 
             <FeatureRow
-                img="/aurora_stock_photos/Peaceful-Vanilla-Club-3.jpg"
+                img="/aurora_stock_photos/Peaceful-Vanilla-Club-3.webp"
+                alt="Aurora SMP Peaceful Vanilla Gameplay"
                 text={
                     <>
                         Join a chill, <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF9D6C] to-[#BB4E75] font-bold">community-first</span> survival multiplayer world
@@ -97,7 +99,8 @@ const TwoColumnFeatures = () => {
 
             <FeatureRow
                 reverse={true}
-                img="/aurora_stock_photos/Peaceful-Vanilla-Club-4.jpg"
+                img="/aurora_stock_photos/Peaceful-Vanilla-Club-4.webp"
+                alt="LGBTQ+ Friendly Community"
                 text={
                     <>
                         Here you can enjoy a peaceful vanilla experience, with no grief, no pay-to-win vip ranks, no map resets and no PvP
@@ -107,7 +110,8 @@ const TwoColumnFeatures = () => {
             />
 
             <FeatureRow
-                img="/aurora_stock_photos/Screenshot_2026-01-29_212051.png"
+                img="/aurora_stock_photos/Screenshot_2026-01-29_212051.webp"
+                alt="Player-Driven Economy and Shops"
                 text={
                     <>
                         Immerse yourself in our <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF9D6C] to-[#BB4E75] font-bold">player-driven economy</span>.
@@ -118,7 +122,8 @@ const TwoColumnFeatures = () => {
 
             <FeatureRow
                 reverse={true}
-                img="/aurora_stock_photos/minecraft-1618089_1920.jpg"
+                img="/aurora_stock_photos/minecraft-1618089_1920.webp"
+                alt="Custom Biomes and World Exploration"
                 text={
                     <>
                         Explore stunning <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF9D6C] to-[#BB4E75] font-bold">custom biomes</span> and structures,

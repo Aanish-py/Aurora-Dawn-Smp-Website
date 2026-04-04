@@ -1,19 +1,23 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import AnnouncementTab from './components/AnnouncementTab';
-import Home from './pages/Home';
-import AnnouncementsPage from './pages/AnnouncementsPage';
-import RulesPage from './pages/RulesPage';
-import JoinPage from './pages/JoinPage';
-import LorePage from './pages/LorePage';
-import AdminLogin from './pages/AdminLogin';
-import AdminDashboard from './pages/AdminDashboard';
 import { ContentProvider } from './context/ContentContext';
 import './index.css';
 import LiquidEther from './components/LiquidEther';
 import SplashCursor from './components/SplashCursor';
+import PageLoader from './components/PageLoader';
+
+// Lazy load pages
+const Home = lazy(() => import('./pages/Home'));
+const AnnouncementsPage = lazy(() => import('./pages/AnnouncementsPage'));
+const RulesPage = lazy(() => import('./pages/RulesPage'));
+const JoinPage = lazy(() => import('./pages/JoinPage'));
+const LorePage = lazy(() => import('./pages/LorePage'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+
+
 
 function App() {
     return (
@@ -23,7 +27,14 @@ function App() {
                 <SplashCursor />
                 <Routes>
                     {/* Admin/Portal Route - No layout */}
-                    <Route path="/portal-management" element={<AdminDashboard />} />
+                    <Route 
+                        path="/portal-management" 
+                        element={
+                            <Suspense fallback={<PageLoader />}>
+                                <AdminDashboard />
+                            </Suspense>
+                        } 
+                    />
 
                     {/* Regular pages with layout */}
                     <Route path="/*" element={
@@ -33,11 +44,11 @@ function App() {
 
                             <main className="flex-grow pt-36 md:pt-40">
                                 <Routes>
-                                    <Route path="/" element={<Home />} />
-                                    <Route path="/announcements" element={<AnnouncementsPage />} />
-                                    <Route path="/rules" element={<RulesPage />} />
-                                    <Route path="/join" element={<JoinPage />} />
-                                    <Route path="/lore" element={<LorePage />} />
+                                    <Route path="/" element={<Suspense fallback={<PageLoader />}><Home /></Suspense>} />
+                                    <Route path="/announcements" element={<Suspense fallback={<PageLoader />}><AnnouncementsPage /></Suspense>} />
+                                    <Route path="/rules" element={<Suspense fallback={<PageLoader />}><RulesPage /></Suspense>} />
+                                    <Route path="/join" element={<Suspense fallback={<PageLoader />}><JoinPage /></Suspense>} />
+                                    <Route path="/lore" element={<Suspense fallback={<PageLoader />}><LorePage /></Suspense>} />
                                 </Routes>
                             </main>
 

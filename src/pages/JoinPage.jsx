@@ -77,8 +77,9 @@ const JoinPage = () => {
             {/* Background elements */}
             <div className="fixed inset-0 pointer-events-none z-0">
                 <img
-                    src="/aurora_stock_photos/2024-10-08_03.jpg"
-                    alt="Background"
+                    src="/aurora_stock_photos/2024-10-08_03.webp"
+                    alt="Aurora SMP Joining Experience Background"
+                    loading="lazy"
                     className="w-full h-full object-cover opacity-60"
                 />
                 <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />

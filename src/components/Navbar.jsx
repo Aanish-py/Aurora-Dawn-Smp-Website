@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
+import MobileMenu from './MobileMenu';
 
 const Navbar = () => {
     const [activeTab, setActiveTab] = useState("Home");
@@ -8,6 +10,7 @@ const Navbar = () => {
     const [visible, setVisible] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
     const [isCopied, setIsCopied] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const location = useLocation();
 
     useEffect(() => {
@@ -60,7 +63,7 @@ const Navbar = () => {
                     opacity: visible ? 1 : 0
                 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                                className={`pointer-events-auto transition-all duration-300 ${scrolled ? 'bg-aurora-dark/90 backdrop-blur-xl py-4' : 'bg-aurora-dark/60 backdrop-blur-md py-6'} border-b border-white/10 w-full flex items-center shadow-2xl shadow-aurora-green/5`}
+                className={`pointer-events-auto transition-all duration-300 ${scrolled ? 'bg-aurora-dark/90 backdrop-blur-xl py-4' : 'bg-aurora-dark/60 backdrop-blur-md py-6'} border-b border-white/10 w-full flex items-center shadow-2xl shadow-aurora-green/5`}
             >
                 <div className="max-w-[1920px] mx-auto w-full px-6 md:px-12 flex items-center">
                     {/* Left: Logo */}
@@ -76,7 +79,7 @@ const Navbar = () => {
                         </Link>
                     </div>
 
-                    {/* Center: Navigation */}
+                    {/* Center: Navigation - Hidden on mobile */}
                     <div className="hidden lg:flex justify-center">
                         <ul className="flex items-center gap-1 bg-black/20 rounded-full p-1 border border-white/5">
                             {tabs.map((tab) => (
@@ -101,11 +104,11 @@ const Navbar = () => {
                     </div>
 
                     {/* Right: Actions */}
-                    <div className="flex-1 flex justify-end items-center gap-6">
+                    <div className="flex-1 flex justify-end items-center gap-4 md:gap-6">
                         <div className={`hidden xl:block w-px h-6 bg-white/10 transition-all ${scrolled ? 'opacity-0 w-0' : 'opacity-100'}`}></div>
 
                         <button
-                            className={`px-8 py-3.5 rounded-full text-base font-medium transition-all border whitespace-nowrap active:scale-95 ${
+                            className={`px-4 md:px-8 py-2.5 md:py-3.5 rounded-full text-xs md:text-base font-medium transition-all border whitespace-nowrap active:scale-95 ${
                                 isCopied 
                                 ? 'bg-aurora-green/20 border-aurora-green text-aurora-green shadow-[0_0_20px_rgba(0,210,160,0.2)]' 
                                 : 'bg-white/5 hover:bg-white/10 text-white border-white/10 hover:border-aurora-green/50 hover:shadow-[0_0_20px_rgba(0,210,160,0.15)]'
@@ -117,12 +120,27 @@ const Navbar = () => {
                             }}
                         >
                             <span className="transition-colors">
-                                {isCopied ? "Copied!" : "Copy IP"}
+                                {isCopied ? "IP COPIED!" : "Copy IP"}
                             </span>
+                        </button>
+
+                        {/* Mobile Menu Toggle */}
+                        <button
+                            onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            className="lg:hidden p-2.5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors"
+                        >
+                            {isMenuOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
                         </button>
                     </div>
                 </div>
             </motion.nav>
+
+            {/* Mobile Menu Overlay */}
+            <MobileMenu 
+                isOpen={isMenuOpen} 
+                onClose={() => setIsMenuOpen(false)} 
+                tabs={tabs} 
+            />
         </div>
     );
 };

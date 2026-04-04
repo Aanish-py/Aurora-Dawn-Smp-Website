@@ -6,22 +6,22 @@ const FeatureGrid = () => {
         {
             text: "Community First",
             link: "#",
-            image: "/aurora_stock_photos/Peaceful-Vanilla-Club-3.jpg",
+            image: "/aurora_stock_photos/Peaceful-Vanilla-Club-3.webp",
         },
         {
             text: "No Pay-to-Win",
             link: "#",
-            image: "/aurora_stock_photos/Peaceful-Vanilla-Club-4.jpg",
+            image: "/aurora_stock_photos/Peaceful-Vanilla-Club-4.webp",
         },
         {
             text: "LGBTQ+ Friendly",
             link: "#",
-            image: "/aurora_stock_photos/2024-09-17_19.jpg",
+            image: "/aurora_stock_photos/2024-09-17_19.webp",
         },
         {
             text: "Performance Optimized",
             link: "#",
-            image: "/aurora_stock_photos/2024-10-08_03.jpg",
+            image: "/aurora_stock_photos/2024-10-08_03.webp",
         }
     ];
 

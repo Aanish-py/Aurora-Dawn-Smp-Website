@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-const RulesBg = '/rules_newphoto.webp';
+const RulesBg = '/aurora_stock_photos/rules_newphoto.webp';
 
 const RuleItem = ({ title, description, delay }) => (
     <motion.div
@@ -99,7 +99,8 @@ const RulesPage = () => {
             <div className="fixed inset-0 pointer-events-none z-0">
                 <img
                     src={RulesBg}
-                    alt="Background"
+                    alt="Aurora SMP Server Rules and Community Guidelines"
+                    loading="lazy"
                     className="w-full h-full object-cover opacity-80"
                 />
                 <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />

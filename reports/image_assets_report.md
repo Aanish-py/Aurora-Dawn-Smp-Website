@@ -4,34 +4,23 @@ This report provides a comprehensive list of all image assets found within the p
 
 ## 1. Project-wide Image Inventory
 
-### Public Directory (`/public`)
-These assets are served at the root path in the built application.
+### Centralized Assets Directory (`/public/aurora_stock_photos`)
+All project image assets have been consolidated into this single directory for simplified management and better performance.
 
-| Filename | Path | Description |
-| :--- | :--- | :--- |
-| `favicon.png` | `/favicon.png` | Site favicon |
-| `rules_newphoto.webp` | `/rules_newphoto.webp` | Background image for the Rules page |
-| `lore-bg.png` | `/images/lore-bg.png` | Background image for the Lore page |
-
-### Source Assets (`/src/assets`)
-These assets are imported directly into React components.
-
-| Filename | Path | Usage |
-| :--- | :--- | :--- |
-| `aurora-hero-v3.jpg` | `src/assets/aurora-hero-v3.jpg` | Main hero backdrop image |
-| `news-hero.png` | `src/assets/news-hero.png` | Banner for the Announcements/News page |
-
-### Stock Photos Directory (`/public/aurora_stock_photos`)
-A collection of Minecraft screenshots and community photos used throughout the site.
-
-| Filename | Path | Primary Usage |
-| :--- | :--- | :--- |
-| `2024-09-17_19.jpg` | `/aurora_stock_photos/2024-09-17_19.jpg` | Feature Grid |
-| `2024-10-08_03.jpg` | `/aurora_stock_photos/2024-10-08_03.jpg` | Join Page / Feature Grid |
-| `Peaceful-Vanilla-Club-3.jpg` | `/aurora_stock_photos/Peaceful-Vanilla-Club-3.jpg` | Feature Grid / Two Column Features |
-| `Peaceful-Vanilla-Club-4.jpg` | `/aurora_stock_photos/Peaceful-Vanilla-Club-4.jpg` | Feature Grid / Two Column Features |
-| `Screenshot_2026-01-29_212051.png` | `/aurora_stock_photos/Screenshot_2026-01-29_212051.png` | Two Column Features |
-| `minecraft-1618089_1920.jpg` | `/aurora_stock_photos/minecraft-1618089_1920.jpg` | Two Column Features |
+| Filename | Path | Category | Primary Usage | Size |
+| :--- | :--- | :--- | :--- | :--- |
+| `favicon.png` | `/aurora_stock_photos/favicon.png` | UI | Site favicon (Browser tab) | 386 KB |
+| `og-image.png` | `/aurora_stock_photos/og-image.png` | Metadata | OpenGraph / Social Preview | 929 KB |
+| `rules_newphoto.webp` | `/aurora_stock_photos/rules_newphoto.webp` | Backdrop | Rules Page background | 550 KB |
+| `lore-bg.png` | `/aurora_stock_photos/lore-bg.png` | Backdrop | Lore Page background | 922 KB |
+| `aurora-hero-v3.jpg` | `/aurora_stock_photos/aurora-hero-v3.jpg` | Backdrop | Main Hero backdrop | 103 KB |
+| `news-hero.png` | `/aurora_stock_photos/news-hero.png` | Banner | Announcements Page header | 814 KB |
+| `2024-09-17_19.webp` | `/aurora_stock_photos/2024-09-17_19.webp` | Screenshot | Feature Grid | 209 KB |
+| `2024-10-08_03.webp` | `/aurora_stock_photos/2024-10-08_03.webp` | Screenshot | Join Page / Feature Grid | 202 KB |
+| `Peaceful-Vanilla-Club-3.webp` | `/aurora_stock_photos/Peaceful-Vanilla-Club-3.webp` | Screenshot | Feature Grid / Two Column Features | 146 KB |
+| `Peaceful-Vanilla-Club-4.webp` | `/aurora_stock_photos/Peaceful-Vanilla-Club-4.webp` | Screenshot | Feature Grid / Two Column Features | 165 KB |
+| `Screenshot_2026-01-29_212051.webp` | `/aurora_stock_photos/Screenshot_2026-01-29_212051.webp` | Screenshot | Two Column Features | 34 KB |
+| `minecraft-1618089_1920.webp` | `/aurora_stock_photos/minecraft-1618089_1920.webp` | Screenshot | Two Column Features | 653 KB |
 
 ---
 
@@ -39,24 +28,26 @@ A collection of Minecraft screenshots and community photos used throughout the s
 
 The following table maps components to the specific images they reference.
 
-| Component | Referenced Image Path | Logic Location |
-| :--- | :--- | :--- |
-| `HeroBackdrop.jsx` | `../assets/aurora-hero-v3.jpg` | Import as `heroBg` |
-| `AnnouncementsPage.jsx`| `../assets/news-hero.png` | Import as `newsHero` |
-| `RulesPage.jsx` | `/rules_newphoto.webp` | Defined in `RulesBg` constant |
-| `LorePage.jsx` | `/images/lore-bg.png` | Direct `src` attribute |
-| `JoinPage.jsx` | `/aurora_stock_photos/2024-10-08_03.jpg` | Direct `src` attribute |
-| `FeatureGrid.jsx` | Various stock photos | Data array for grid items |
-| `TwoColumnFeatures.jsx`| Various stock photos | Props passed to `FeatureRow` |
-| `siteContent.json` | `/src/assets/news-hero.png` | JSON metadata |
+| Component | Referenced Image Path | Reference Type | Performance Strategy |
+| :--- | :--- | :--- | :--- |
+| `HeroBackdrop.jsx` | `/aurora_stock_photos/aurora-hero-v3.jpg` | Constant | Priority Load |
+| `AnnouncementsPage.jsx`| `/aurora_stock_photos/news-hero.png` | Constant | Priority Load |
+| `RulesPage.jsx` | `/aurora_stock_photos/rules_newphoto.webp` | Constant | **Lazy Loaded** |
+| `LorePage.jsx` | `/aurora_stock_photos/lore-bg.png` | Meta | **Lazy Loaded** |
+| `index.html` | `/aurora_stock_photos/favicon.png` | Favicon link | Browser Cache |
+| `JoinPage.jsx` | `/aurora_stock_photos/2024-10-08_03.webp` | Direct `src` | **Lazy Loaded** |
+| `siteContent.json` | `/aurora_stock_photos/news-hero.png` | JSON Path | Default |
+| `FeatureGrid.jsx` | Various stock photos | Card data | **Lazy Loaded** |
+| `TwoColumnFeatures.jsx`| Various stock photos | Feature grid | **Lazy Loaded** |
 
 ---
 
-## 3. Unused or Duplicate Assets
+## 3. Directory Audit Notes
 
-During the audit, the following observations were made:
-- **Duplicate Directory:** There are two similarly named directories: `public/aurora_stock_photos` and `public/aurora_stock photos` (with a space). The codebase primarily references the one WITHOUT the space.
-- **Unused Assets:** Many files in `public/aurora_stock photos` (with space) like `hero-bg.jpg`, `hero-bg.png`, and `feature-3.png` do not appear to be directly referenced by filename in the current `src` directory.
+- [x] **Consolidation**: All images moved from `public/images/`, `public/`, and `src/assets/` to `public/aurora_stock_photos/`.
+- [x] **Optimization**: All non-hero images now use `loading="lazy"`.
+- [x] **Metadata**: Professional `og-image.png` generated and implemented.
+- [x] **Cleanup**: All massive or redundant `.webp` icons have been removed.
 
 > [!TIP]
-> Consider consolidating the stock photo directories to avoid confusion and reduce project size.
+> All future image assets should be placed in the `/public/aurora_stock_photos/` directory and referenced using an absolute path starting with `/aurora_stock_photos/`.

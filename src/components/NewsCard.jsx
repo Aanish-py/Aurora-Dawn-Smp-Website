@@ -27,6 +27,7 @@ const NewsCard = ({ news, index, span = 1 }) => {
                     <img
                         src={news.image}
                         alt={news.title}
+                        loading="lazy"
                         className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
 
