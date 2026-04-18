@@ -39,7 +39,7 @@ const AnnouncementRow = ({ news, index, onClick }) => {
                         {news.title}
                     </h3>
                 </div>
-                <div className="flex items-center gap-2 text-[10px] md:text-xs font-bold text-white/40 uppercase tracking-widest">
+                <div className="flex items-center gap-2 text-[10px] md:text-xs font-bold text-white/80 uppercase tracking-widest">
                     <span className="text-aurora-blue/60 font-black">Aurora Team</span>
                     <span>•</span>
                     <span>{news.date}</span>
@@ -53,7 +53,7 @@ const AnnouncementRow = ({ news, index, onClick }) => {
 
             {/* Last Post Info */}
             <div className="hidden sm:flex flex-col items-end text-right min-w-[150px]">
-                <span className="text-xs font-black text-white/60 group-hover:text-aurora-green transition-colors">{news.date}</span>
+                <span className="text-xs font-black text-white group-hover:text-aurora-green transition-colors">{news.date}</span>
                 <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest">{news.author}</span>
             </div>
 

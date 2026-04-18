@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
+import useIsMobile from '../hooks/useIsMobile';
 
 const GasCursor = () => {
+    const isMobile = useIsMobile();
     const canvasRef = useRef(null);
     const contextRef = useRef(null);
     const audioRef = useRef(null);
@@ -43,10 +45,10 @@ const GasCursor = () => {
                 y: py,
                 vx,
                 vy,
-                size: Math.random() * 5 + 10, // Start size (smaller)
-                maxSize: Math.random() * 15 + 25, // End size (smaller)
+                size: Math.random() * 8 + 15, // Start size (buffed)
+                maxSize: Math.random() * 30 + 50, // End size (buffed)
                 life: 1,
-                decay: Math.random() * 0.01 + 0.02, // Slightly faster decay
+                decay: Math.random() * 0.005 + 0.015, // Slower decay for longer trails
                 hue: Math.random() * 60 + 140, // Aurora spectrum (Green/Cyan/Blue)
                 rotation: Math.random() * Math.PI * 2,
                 spin: (Math.random() - 0.5) * 0.05
@@ -108,7 +110,7 @@ const GasCursor = () => {
                 const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, p.size);
 
                 // Fade out based on life
-                const alpha = p.life * 0.1; // Max opacity 0.1 (much more subtle)
+                const alpha = p.life * 0.5; // Max opacity 0.5 (Buffed Visibility)
 
                 gradient.addColorStop(0, `hsla(${p.hue}, 80%, 60%, ${alpha})`);
                 gradient.addColorStop(0.4, `hsla(${p.hue}, 70%, 50%, ${alpha * 0.5})`);
@@ -132,6 +134,8 @@ const GasCursor = () => {
             cancelAnimationFrame(animId);
         };
     }, []);
+
+    if (isMobile) return null;
 
     return (
         <canvas

@@ -25,7 +25,7 @@
         --secondary-foreground: 0 0% 98%;
 
         --muted: 240 3.7% 15.9%;
-        --muted-foreground: 240 5% 64.9%;
+        --muted-foreground: 0 0% 100%;
 
         --accent: 240 3.7% 15.9%;
         --accent-foreground: 0 0% 98%;
@@ -57,7 +57,7 @@
         --secondary-foreground: 0 0% 98%;
 
         --muted: 240 3.7% 15.9%;
-        --muted-foreground: 240 5% 64.9%;
+        --muted-foreground: 0 0% 100%;
 
         --accent: 240 3.7% 15.9%;
         --accent-foreground: 0 0% 98%;
@@ -159,4 +159,12 @@
             background-position: 200% center;
         }
     }
-}
+
+    @media (max-width: 767px) {
+        .animate-float,
+        .animate-float-delayed,
+        .animate-float-slow {
+            animation: none !important;
+        }
+    }
+}

@@ -1,10 +1,22 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check, Github } from 'lucide-react';
+import { Copy, Check } from 'lucide-react';
+import { FaDiscord } from 'react-icons/fa';
+import useIsMobile from '../hooks/useIsMobile';
+import { useContent } from '../context/ContentContext';
 
 const MainHero = () => {
+    const isMobile = useIsMobile();
+    const { content } = useContent();
     const [ripples, setRipples] = useState([]);
-    const [isCopied, setIsCopied] = useState(false);
+    const [isIpCopied, setIsIpCopied] = useState(false);
+
+    const serverInfo = content?.serverInfo || {
+        javaIP: 'play.auroradawn.net',
+        bedrockIP: 'play.auroradawn.net:19132',
+    };
+
+    const discordLink = content?.socialLinks?.find(link => link.name === 'Discord' || link.platform === 'Discord')?.url || 'https://dsc.gg/AuroraDawn';
 
     const createRipple = (event, buttonId) => {
         const button = event.currentTarget;
@@ -28,37 +40,43 @@ const MainHero = () => {
         }, 600);
     };
 
+    const handleCopyIp = (e) => {
+        createRipple(e, 'primary');
+        navigator.clipboard.writeText(serverInfo.javaIP);
+        setIsIpCopied(true);
+        setTimeout(() => setIsIpCopied(false), 2000);
+    };
+
+    const handleJoinDiscord = (e) => {
+        createRipple(e, 'secondary');
+        window.open(discordLink, '_blank');
+    };
+
     return (
         <main id="home" className="relative min-h-screen flex flex-col justify-start items-center pt-20 md:pt-28 pb-20 px-6 z-10 text-center">
-            <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1, delay: 0.2 }}
-                className="mb-6"
-            >
-                <span className="py-2 px-6 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-aurora-green text-sm font-bold tracking-widest uppercase animate-float">
-                    Welcome to 2026
-                </span>
-            </motion.div>
 
             <motion.h1
-                initial={{ opacity: 0, y: 30 }}
+                initial={isMobile ? { opacity: 0 } : { opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
-                className="text-7xl md:text-9xl font-heading tracking-tighter text-white mb-6 drop-shadow-2xl"
+                style={{ willChange: "transform, opacity" }}
+                className="text-6xl md:text-9xl font-heading tracking-tighter text-white mb-6 drop-shadow-2xl"
             >
                 <motion.span
-                    initial={{ opacity: 0, x: -50 }}
+                    initial={isMobile ? { opacity: 0 } : { opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6, delay: 0.6 }}
+                    style={{ willChange: "transform, opacity" }}
+                    className="shiny-text"
                 >
                     AURORA
                 </motion.span>
                 <br />
                 <motion.span
-                    initial={{ opacity: 0, x: 50 }}
+                    initial={isMobile ? { opacity: 0 } : { opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6, delay: 0.8 }}
+                    style={{ willChange: "transform, opacity" }}
                     className="shiny-text"
                 >
                     DAWN
@@ -69,32 +87,29 @@ const MainHero = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1, duration: 0.8 }}
-                className="max-w-2xl text-xl text-white/90 font-light mb-10 leading-relaxed drop-shadow-lg"
+                style={{ willChange: "opacity" }}
+                className="max-w-2xl text-lg md:text-xl text-white/90 font-light mb-10 leading-relaxed drop-shadow-lg px-4 py-2 bg-black/10 backdrop-blur-[2px] rounded-2xl md:bg-transparent md:backdrop-blur-none"
             >
                 Immerse yourself in a <span className="text-aurora-green font-normal">beautifully crafted</span> survival experience.
                 Where community comes first and the adventure never ends.
             </motion.p>
 
             <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={isMobile ? { opacity: 0 } : { opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.2 }}
+                style={{ willChange: "transform, opacity" }}
                 className="flex flex-col md:flex-row gap-6 items-center"
             >
                 <motion.button
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={!isMobile ? { scale: 1.05 } : {}}
                     whileTap={{ scale: 0.95 }}
-                    onClick={(e) => {
-                        createRipple(e, 'primary');
-                        navigator.clipboard.writeText('play.auroradawn.net');
-                        setIsCopied(true);
-                        setTimeout(() => setIsCopied(false), 2000);
-                    }}
+                    onClick={handleCopyIp}
                     className="relative group px-8 py-4 bg-aurora-green text-aurora-dark font-heading text-lg rounded-full overflow-hidden shadow-[0_0_40px_-10px_rgba(0,210,160,0.5)] transition-all hover:shadow-[0_0_60px_-15px_rgba(0,210,160,0.8)] animate-float-delayed"
                 >
                     <span className="relative z-10 flex items-center gap-2">
                         <AnimatePresence mode="wait">
-                            {isCopied ? (
+                            {isIpCopied ? (
                                 <motion.span
                                     key="copied"
                                     initial={{ opacity: 0, y: 10 }}
@@ -102,7 +117,7 @@ const MainHero = () => {
                                     exit={{ opacity: 0, y: -10 }}
                                     className="flex items-center gap-2"
                                 >
-                                    Copied!
+                                    IP Copied!
                                     <Check size={20} />
                                 </motion.span>
                             ) : (
@@ -136,14 +151,14 @@ const MainHero = () => {
                 </motion.button>
 
                 <motion.button
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={!isMobile ? { scale: 1.05 } : {}}
                     whileTap={{ scale: 0.95 }}
-                    onClick={(e) => createRipple(e, 'secondary')}
+                    onClick={handleJoinDiscord}
                     className="relative px-8 py-4 bg-white/10 text-white font-heading text-lg rounded-full backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all flex items-center gap-2 overflow-hidden"
                 >
                     <span className="relative z-10 flex items-center gap-2">
                         Join Discord
-                        <Github size={20} />
+                        <FaDiscord size={20} />
                     </span>
                     {ripples
                         .filter((r) => r.buttonId === 'secondary')
@@ -162,23 +177,27 @@ const MainHero = () => {
                 </motion.button>
             </motion.div>
 
-            <motion.div
-                animate={{
-                    y: [0, 10, 0],
-                }}
-                transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                }}
-                className="absolute bottom-10 left-0 right-0 flex justify-center opacity-50"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
-                </svg>
-            </motion.div>
+            {!isMobile && (
+                <motion.a
+                    href="#why-join"
+                    animate={{
+                        y: [0, 10, 0],
+                    }}
+                    transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                    }}
+                    className="absolute bottom-10 left-0 right-0 flex justify-center opacity-50 cursor-pointer hover:opacity-100 transition-opacity"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
+                    </svg>
+                </motion.a>
+            )}
         </main>
     );
 };
 
 export default MainHero;
+

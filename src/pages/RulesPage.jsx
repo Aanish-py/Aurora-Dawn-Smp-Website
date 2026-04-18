@@ -17,7 +17,7 @@ const RuleItem = ({ title, description, delay }) => (
                 <h3 className="text-lg font-bold text-white font-heading tracking-wide group-hover:text-purple-400 transition-colors duration-300">
                     {title}
                 </h3>
-                <p className="text-white/60 leading-relaxed text-sm">
+                <p className="text-white leading-relaxed text-sm">
                     {description}
                 </p>
             </div>
@@ -101,9 +101,9 @@ const RulesPage = () => {
                     src={RulesBg}
                     alt="Aurora SMP Server Rules and Community Guidelines"
                     loading="lazy"
-                    className="w-full h-full object-cover opacity-80"
+                    className="w-full h-full object-cover opacity-50"
                 />
-                <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />
+                <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
 
                 {/* Decorative gradients on top of image */}
                 <div className="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-aurora-green/10 rounded-full blur-[120px]" />
@@ -117,7 +117,7 @@ const RulesPage = () => {
                     transition={{ duration: 0.8 }}
                     className="text-center mb-12"
                 >
-                    <h1 className="text-4xl md:text-6xl font-bold font-heading mb-4 tracking-wider">
+                    <h1 className="text-3xl md:text-6xl font-bold font-heading mb-4 tracking-wider">
                         <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-white to-purple-400 animate-gradient-x">
                             SERVER RULES
                         </span>
@@ -125,7 +125,7 @@ const RulesPage = () => {
                     <div className="h-1 w-24 bg-purple-500 mx-auto rounded-full shadow-[0_0_15px_rgba(168,85,247,0.5)]" />
                 </motion.div>
 
-                <div className="bg-black/40 backdrop-blur-md p-6 md:p-10 rounded-3xl border border-white/5 shadow-2xl">
+                <div className="bg-black/40 backdrop-blur-md p-4 md:p-10 rounded-3xl border border-white/5 shadow-2xl">
                     <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-16 gap-y-2">
                         {rules.map((rule, index) => (
                             <RuleItem
@@ -153,7 +153,7 @@ const RulesPage = () => {
                                 <h3 className="text-lg font-bold text-white font-heading tracking-wide">
                                     Allowed Mods
                                 </h3>
-                                <p className="text-white/70 leading-relaxed text-sm">
+                                <p className="text-white leading-relaxed text-sm">
                                     We allow <span className="text-aurora-green">Freecam, BridgingMod, Fullbright, Litematica, ReplanterPlus, Xaero's MiniMap, and World Map</span>.
                                     If the mod you want to use is not listed here, please ask in 🆘│tickets for help.
                                 </p>

@@ -1,6 +1,8 @@
 "use client"
 
 import * as React from "react"
+import { useContent } from "@/context/ContentContext"
+import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -11,10 +13,12 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Facebook, Instagram, Linkedin, Moon, Send, Sun, Twitter } from "lucide-react"
+import { Moon, Send, Sun } from "lucide-react"
+import { FaDiscord, FaYoutube } from "react-icons/fa"
 
 function Footerdemo() {
     const [isDarkMode, setIsDarkMode] = React.useState(true)
+    const navigate = useNavigate()
 
     React.useEffect(() => {
         if (isDarkMode) {
@@ -23,6 +27,10 @@ function Footerdemo() {
             document.documentElement.classList.remove("dark")
         }
     }, [isDarkMode])
+
+    const { content } = useContent();
+    const discordLink = content?.socialLinks?.find(l => l.platform === 'Discord')?.url || "https://dsc.gg/AuroraDawn";
+    const youtubeLink = content?.socialLinks?.find(l => l.platform === 'YouTube')?.url || "https://youtube.com/@auroradawnsmp";
 
     return (
         <footer className="relative border-t border-white/10 bg-black text-white transition-colors duration-300">
@@ -72,7 +80,7 @@ function Footerdemo() {
                     <p className="text-sm text-zinc-500 relative inline-block">
                         © 2026 Aurora Dawn SMP. Not affiliated with Mojang AB.
                         <span 
-                            onClick={() => window.location.href = '/portal-management'}
+                            onClick={() => navigate('/portal-terminal-x77')}
                             className="absolute -right-2 bottom-0 w-1 h-1 bg-white/5 cursor-pointer hover:bg-aurora-green/20 hover:shadow-[0_0_8px_rgba(0,210,160,0.4)] rounded-full transition-all duration-500"
                             title="Access Restricted"
                         />
@@ -81,15 +89,16 @@ function Footerdemo() {
                     <div className="flex items-center space-x-4">
                         {/* Social icons kept but styled for dark theme */}
                         <div className="flex space-x-2">
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-zinc-400 hover:text-white hover:bg-white/10">
-                                <Facebook className="h-4 w-4" />
-                            </Button>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-zinc-400 hover:text-white hover:bg-white/10">
-                                <Twitter className="h-4 w-4" />
-                            </Button>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-zinc-400 hover:text-white hover:bg-white/10">
-                                <Instagram className="h-4 w-4" />
-                            </Button>
+                            <a href={discordLink} target="_blank" rel="noopener noreferrer">
+                                <Button variant="ghost" size="icon" className="h-8 w-8 text-zinc-400 hover:text-[#5865F2] hover:bg-[#5865F2]/10">
+                                    <FaDiscord className="h-4 w-4" />
+                                </Button>
+                            </a>
+                            <a href={youtubeLink} target="_blank" rel="noopener noreferrer">
+                                <Button variant="ghost" size="icon" className="h-8 w-8 text-zinc-400 hover:text-[#FF0000] hover:bg-[#FF0000]/10">
+                                    <FaYoutube className="h-4 w-4" />
+                                </Button>
+                            </a>
                         </div>
                     </div>
                 </div>

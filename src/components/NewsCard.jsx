@@ -43,7 +43,7 @@ const NewsCard = ({ news, index, span = 1 }) => {
                 <div className={`relative z-10 p-6 flex flex-col flex-grow ${span === 2 ? 'md:w-2/5 justify-center' : ''}`}>
 
                     {/* Meta Data */}
-                    <div className="flex items-center gap-4 text-xs font-medium text-white/40 mb-3 uppercase tracking-wider">
+                    <div className="flex items-center gap-4 text-xs font-medium text-white/80 mb-3 uppercase tracking-wider">
                         <div className="flex items-center gap-1.5">
                             <Calendar className="w-3.5 h-3.5" />
                             <span>{news.date}</span>
@@ -62,14 +62,14 @@ const NewsCard = ({ news, index, span = 1 }) => {
                     </h3>
 
                     {/* Excerpt */}
-                    <p className="text-sm text-white/60 font-light leading-relaxed mb-6 line-clamp-3">
+                    <p className="text-sm text-white font-light leading-relaxed mb-6 line-clamp-3">
                         {news.excerpt}
                     </p>
 
                     {/* Action - Hypixel style button */}
                     <div className="mt-auto pt-6 border-t border-white/5 flex items-center justify-between">
                         <div className="flex items-center gap-2 group-hover:translate-x-1 transition-transform">
-                            <span className="text-sm font-black uppercase tracking-tighter text-white/40 group-hover:text-[#FFAA00]">
+                            <span className="text-sm font-black uppercase tracking-tighter text-white group-hover:text-[#FFAA00]">
                                 View Full Post
                             </span>
                             <ArrowRight className="w-4 h-4 text-white/20 group-hover:text-[#FFAA00]" />

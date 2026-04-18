@@ -1,14 +1,16 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import useIsMobile from '../hooks/useIsMobile';
 
 const LiquidEther = ({
   className = '',
   colors = ['#00D2A0', '#A364FF', '#4B9EFF'], // Aurora: Green, Purple, Blue
 }) => {
   const containerRef = useRef(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (isMobile || !containerRef.current) return;
     console.log("Soft Aurora: Initializing...");
 
     // --- 1. Setup Scene ---
@@ -149,7 +151,9 @@ const LiquidEther = ({
       geometry.dispose();
       material.dispose();
     };
-  }, [JSON.stringify(colors)]);
+  }, [JSON.stringify(colors), isMobile]);
+
+  if (isMobile) return null;
 
   return (
     <div

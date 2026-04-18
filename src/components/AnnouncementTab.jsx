@@ -29,7 +29,9 @@ const AnnouncementTab = () => {
     }, [lastScrollY]);
 
     const { content } = useContent();
+    
     const announcements = content.marquee || [];
+    const discordLink = content?.socialLinks?.find(link => link.name === 'Discord' || link.platform === 'Discord')?.url || 'https://dsc.gg/AuroraDawn';
 
     // Only render on the home page
     if (!isHomePage) return null;
@@ -50,7 +52,7 @@ const AnnouncementTab = () => {
                 {/* Left Icon Badge */}
                 <div className="hidden md:flex items-center gap-2 px-3 py-1 mr-6 rounded-md bg-white/5 border border-white/5 backdrop-blur-sm shrink-0">
                     <Bell className="w-3.5 h-3.5 text-aurora-green" />
-                    <span className="text-[10px] font-black font-heading text-white/60 uppercase tracking-[0.2em]">Live Status</span>
+                    <span className="text-[10px] font-black font-heading text-white uppercase tracking-[0.2em]">Live Status</span>
                 </div>
 
                 {/* Marquee Content */}
@@ -67,12 +69,12 @@ const AnnouncementTab = () => {
                     >
                         {/* Render content twice for seamless loop */}
                         {[...announcements, ...announcements].map((text, i) => (
-                            <div key={i} className="flex items-center mx-10">
-                                <Sparkles className="w-3.5 h-3.5 text-aurora-green/40 mr-4 shrink-0" />
-                                <span className="text-xs font-bold text-white/50 tracking-[0.1em] uppercase hover:text-white transition-colors cursor-default">
+                            <div key={i} className="flex items-center mx-4 md:mx-10">
+                                <Sparkles className="hidden xs:block w-3 h-3 text-aurora-green/40 mr-2 md:mr-4 shrink-0" />
+                                <span className="text-[10px] md:text-xs font-bold text-white/90 tracking-[0.05em] md:tracking-[0.1em] uppercase hover:text-white transition-colors cursor-default whitespace-nowrap">
                                     {text}
                                 </span>
-                                <span className="mx-10 text-white/5 font-black">/ /</span>
+                                <span className="mx-4 md:mx-10 text-white/5 font-black">/ /</span>
                             </div>
                         ))}
                     </motion.div>
@@ -84,15 +86,13 @@ const AnnouncementTab = () => {
 
                 {/* Right Call to Action */}
                 <div className="hidden md:flex shrink-0 ml-6">
-                    <a 
-                        href="https://dsc.gg/AuroraDawn" 
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[10px] font-black uppercase tracking-widest text-aurora-green hover:text-white transition-all flex items-center gap-2 group px-4 py-2 bg-aurora-green/5 hover:bg-aurora-green/10 rounded-lg border border-aurora-green/20"
+                    <button 
+                        onClick={() => window.open(discordLink, '_blank')}
+                        className="text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 group px-4 py-2 rounded-lg border text-aurora-green bg-aurora-green/5 hover:bg-aurora-green/10 border-aurora-green/20"
                     >
                         <span>Join Discord Community</span>
                         <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
-                    </a>
+                    </button>
                 </div>
             </div>
         </motion.div>

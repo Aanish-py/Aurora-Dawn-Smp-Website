@@ -92,7 +92,7 @@ function MenuItem({ link, text, image, speed, textColor, marqueeBgColor, marquee
             style={{ borderTop: isFirst ? 'none' : `1px solid ${borderColor}` }}
         >
             <a
-                className="flex items-center justify-center h-full relative cursor-pointer uppercase no-underline font-bold text-3xl md:text-5xl lg:text-6xl tracking-tighter z-10"
+                className="flex items-center justify-center h-full relative cursor-pointer uppercase no-underline font-bold text-2xl md:text-5xl lg:text-6xl tracking-tighter z-10"
                 href={link}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
@@ -122,9 +122,9 @@ function MenuItem({ link, text, image, speed, textColor, marqueeBgColor, marquee
                     >
                         {[...Array(repetitions * 2)].map((_, idx) => (
                             <div className="marquee-part flex items-center flex-shrink-0" key={idx} style={{ color: marqueeTextColor }}>
-                                <span className="whitespace-nowrap uppercase font-bold text-3xl md:text-5xl lg:text-6xl px-8 md:px-12">{text}</span>
+                                <span className="whitespace-nowrap uppercase font-bold text-2xl md:text-5xl lg:text-6xl px-6 md:px-12">{text}</span>
                                 <div
-                                    className="w-[150px] md:w-[250px] h-[60px] md:h-[100px] rounded-full bg-cover bg-center shrink-0 border-2 border-white/20"
+                                    className="w-[120px] md:w-[250px] h-[50px] md:h-[100px] rounded-full bg-cover bg-center shrink-0 border-2 border-white/20"
                                     style={{ backgroundImage: `url(${image})` }}
                                 />
                                 {/* Hidden img tag to trigger lazy loading of the source */}

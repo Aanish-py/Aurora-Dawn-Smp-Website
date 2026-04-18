@@ -33,7 +33,7 @@ const GradientCountUp = ({ end, label, suffix = "+" }) => {
     }, [end, isInView]);
 
     return (
-        <div ref={ref} className="flex flex-col items-center p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/5 hover:border-white/10 transition-colors text-center">
+        <div ref={ref} className="flex flex-col items-center p-4 md:p-6 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/5 hover:border-white/10 transition-colors text-center">
             <h3 className="text-4xl md:text-5xl font-heading bg-clip-text text-transparent bg-gradient-to-b from-white to-white/50">
                 {count}{suffix}
             </h3>

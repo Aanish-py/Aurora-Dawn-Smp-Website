@@ -31,7 +31,7 @@ const FeatureGrid = () => {
                 <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
                     Why Choose <span className="text-transparent bg-clip-text bg-gradient-to-r from-aurora-green to-aurora-purple">Aurora Dawn?</span>
                 </h2>
-                <p className="text-lg text-white/60 max-w-2xl mx-auto">
+                <p className="text-lg text-white max-w-2xl mx-auto">
                     We're dedicated to providing the best vanilla survival experience with quality-of-life enhancements.
                 </p>
             </div>

@@ -3,8 +3,10 @@ import { motion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import MobileMenu from './MobileMenu';
+import { useContent } from '../context/ContentContext';
 
 const Navbar = () => {
+    const { content } = useContent();
     const [activeTab, setActiveTab] = useState("Home");
     const [scrolled, setScrolled] = useState(false);
     const [visible, setVisible] = useState(true);
@@ -12,6 +14,8 @@ const Navbar = () => {
     const [isCopied, setIsCopied] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const location = useLocation();
+
+    const serverIP = content?.serverInfo?.javaIP || 'play.auroradawn.net';
 
     useEffect(() => {
         const handleScroll = () => {
@@ -87,7 +91,7 @@ const Navbar = () => {
                                     <Link
                                         to={tab.href}
                                         onClick={() => setActiveTab(tab.name)}
-                                        className={`relative px-6 py-3 rounded-full text-base font-medium transition-colors duration-200 block ${activeTab === tab.name ? "text-white" : "text-white/60 hover:text-white"}`}
+                                        className={`relative px-6 py-3 rounded-full text-base font-medium transition-colors duration-200 block ${activeTab === tab.name ? "text-white" : "text-white hover:text-white/80"}`}
                                     >
                                         {activeTab === tab.name && (
                                             <motion.div
@@ -108,19 +112,19 @@ const Navbar = () => {
                         <div className={`hidden xl:block w-px h-6 bg-white/10 transition-all ${scrolled ? 'opacity-0 w-0' : 'opacity-100'}`}></div>
 
                         <button
-                            className={`px-4 md:px-8 py-2.5 md:py-3.5 rounded-full text-xs md:text-base font-medium transition-all border whitespace-nowrap active:scale-95 ${
+                            className={`px-3 md:px-8 py-2 md:py-3.5 rounded-full text-[10px] md:text-base font-medium transition-all border whitespace-nowrap active:scale-95 ${
                                 isCopied 
                                 ? 'bg-aurora-green/20 border-aurora-green text-aurora-green shadow-[0_0_20px_rgba(0,210,160,0.2)]' 
                                 : 'bg-white/5 hover:bg-white/10 text-white border-white/10 hover:border-aurora-green/50 hover:shadow-[0_0_20px_rgba(0,210,160,0.15)]'
                             } group`}
-                            onClick={() => {
-                                navigator.clipboard.writeText('play.auroradawn.net');
-                                setIsCopied(true);
-                                setTimeout(() => setIsCopied(false), 2000);
-                            }}
+                                onClick={() => {
+                                    navigator.clipboard.writeText(serverIP);
+                                    setIsCopied(true);
+                                    setTimeout(() => setIsCopied(false), 2000);
+                                }}
                         >
                             <span className="transition-colors">
-                                {isCopied ? "IP COPIED!" : "Copy IP"}
+                                {isCopied ? "COPIED" : "Copy IP"}
                             </span>
                         </button>
 

@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import useIsMobile from '../hooks/useIsMobile';
 
 const FeatureRow = ({ img, text, alt, reverse = false }) => {
     const ref = useRef(null);
@@ -8,17 +9,18 @@ const FeatureRow = ({ img, text, alt, reverse = false }) => {
         offset: ["start end", "end start"]
     });
 
-    const imageY = useTransform(scrollYProgress, [0, 1], [100, -100]);
+    const isMobile = useIsMobile();
+    const imageY = useTransform(scrollYProgress, [0, 1], isMobile ? [20, -20] : [100, -100]);
     const textOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
 
     return (
-        <div ref={ref} className={`flex flex-col ${reverse ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-10 md:gap-20 my-20`}>
+        <div ref={ref} className={`flex flex-col ${reverse ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-10 md:gap-20 my-12 md:my-20`}>
             {/* Text Side */}
             <motion.div
                 style={{ opacity: textOpacity }}
-                initial={{ opacity: 0, x: reverse ? 50 : -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
+                initial={{ opacity: 0, y: 20, x: isMobile ? 0 : (reverse ? 50 : -50) }}
+                whileInView={{ opacity: 1, y: 0, x: 0 }}
+                viewport={{ once: true, margin: isMobile ? "-50px" : "-100px" }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
                 className="flex-1 text-center md:text-left"
             >
@@ -58,7 +60,7 @@ const FeatureRow = ({ img, text, alt, reverse = false }) => {
 
 const TwoColumnFeatures = () => {
     return (
-        <section id="features" className="relative z-10 py-32 px-6 max-w-7xl mx-auto overflow-hidden">
+        <section id="why-join" className="relative z-10 py-32 px-6 max-w-7xl mx-auto overflow-hidden">
             {/* Background decorations */}
             <motion.div
                 animate={{

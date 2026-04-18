@@ -8,15 +8,31 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useContent } from '../context/ContentContext';
 import AdminLogin from './AdminLogin';
+import { validateSession } from '../utils/security';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
     const { content, updateContent, resetContent } = useContent();
-    const [isAuthenticated, setIsAuthenticated] = useState(sessionStorage.getItem('admin_auth') === 'true');
+    const [isAuthenticated, setIsAuthenticated] = useState(() => {
+        const token = sessionStorage.getItem('admin_auth');
+        return validateSession(token, 20); // 20 minutes limit
+    });
     const [activeTab, setActiveTab] = useState('players');
     const [localContent, setLocalContent] = useState(content);
     const [isSaving, setIsSaving] = useState(false);
     const [saveStatus, setSaveStatus] = useState(null);
+
+    // Auto-logout effect
+    useEffect(() => {
+        if (!isAuthenticated) return;
+        const interval = setInterval(() => {
+            const token = sessionStorage.getItem('admin_auth');
+            if (!validateSession(token, 20)) {
+                handleLogout();
+            }
+        }, 60000); // Check every minute
+        return () => clearInterval(interval);
+    }, [isAuthenticated]);
 
     useEffect(() => {
         if (content) {
@@ -123,7 +139,7 @@ const AdminDashboard = () => {
                             className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-xl text-sm font-bold uppercase tracking-widest transition-all ${
                                 activeTab === item.id 
                                 ? 'bg-white/5 text-aurora-green border border-white/10 shadow-lg shadow-aurora-green/5' 
-                                : 'text-white/30 hover:text-white/60 hover:bg-white/[0.02]'
+                                : 'text-white/60 hover:text-white hover:bg-white/[0.02]'
                             }`}
                         >
                             <item.icon className="w-4 h-4" />
@@ -171,7 +187,7 @@ const AdminDashboard = () => {
                         </button>
                         
                         <button 
-                            className="p-4 bg-white/5 border border-white/10 rounded-xl text-white/40 hover:text-white hover:border-white/20 transition-all"
+                            className="p-4 bg-white/5 border border-white/10 rounded-xl text-white/80 hover:text-white hover:border-white/20 transition-all"
                             onClick={() => navigate('/')}
                         >
                             <ArrowLeft className="w-4 h-4" />
@@ -460,7 +476,7 @@ const AdminDashboard = () => {
                                                     }}
                                                     className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-[10px] text-white focus:border-aurora-green/50 outline-none font-bold uppercase tracking-widest"
                                                 >
-                                                    {["Discord", "YouTube", "TikTok", "Reddit", "Spotify"].map(p => <option key={p} value={p}>{p}</option>)}
+                                                    {["Discord", "YouTube", "TikTok", "MinecraftServer", "Spotify"].map(p => <option key={p} value={p}>{p}</option>)}
                                                 </select>
                                             </div>
                                         </div>

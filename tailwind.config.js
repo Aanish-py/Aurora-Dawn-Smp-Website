@@ -12,7 +12,7 @@ export default {
                     green: '#00D2A0',     // Aurora Green
                     purple: '#A364FF',    // Aurora Purple
                     blue: '#4B9EFF',      // Aurora Blue
-                    text: '#E0E7FF',      // Soft White
+                    text: '#FFFFFF',      // Soft White -> Pure White
                 },
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",

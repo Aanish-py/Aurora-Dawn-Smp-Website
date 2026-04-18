@@ -1,24 +1,27 @@
 import { useEffect, useRef } from 'react';
+import useIsMobile from '../hooks/useIsMobile';
 
 function SplashCursor({
     SIM_RESOLUTION = 128,
     DYE_RESOLUTION = 1440,
     CAPTURE_RESOLUTION = 512,
-    DENSITY_DISSIPATION = 3.5,
+    DENSITY_DISSIPATION = 2.2,
     VELOCITY_DISSIPATION = 2,
     PRESSURE = 0.1,
     PRESSURE_ITERATIONS = 20,
     CURL = 3,
-    SPLAT_RADIUS = 0.2,
-    SPLAT_FORCE = 6000,
+    SPLAT_RADIUS = 0.35,
+    SPLAT_FORCE = 8000,
     SHADING = true,
     COLOR_UPDATE_SPEED = 10,
     BACK_COLOR = { r: 0.5, g: 0, b: 0 },
     TRANSPARENT = true
 }) {
     const canvasRef = useRef(null);
+    const isMobile = useIsMobile();
 
     useEffect(() => {
+        if (isMobile) return;
         const canvas = canvasRef.current;
         if (!canvas) return;
 
@@ -670,6 +673,7 @@ function SplashCursor({
         let lastUpdateTime = Date.now();
         let colorUpdateTimer = 0.0;
 
+        let requestID;
         function updateFrame() {
             const dt = calcDeltaTime();
             if (resizeCanvas()) initFramebuffers();
@@ -677,7 +681,7 @@ function SplashCursor({
             applyInputs();
             step(dt);
             render(null);
-            requestAnimationFrame(updateFrame);
+            requestID = requestAnimationFrame(updateFrame);
         }
 
         function calcDeltaTime() {
@@ -957,45 +961,23 @@ function SplashCursor({
             return hash;
         }
 
-        window.addEventListener('mousedown', e => {
+        const handleMouseDown = e => {
             let pointer = pointers[0];
             let posX = scaleByPixelRatio(e.clientX);
             let posY = scaleByPixelRatio(e.clientY);
             updatePointerDownData(pointer, -1, posX, posY);
             clickSplat(pointer);
-        });
+        };
 
-        document.body.addEventListener('mousemove', function handleFirstMouseMove(e) {
-            let pointer = pointers[0];
-            let posX = scaleByPixelRatio(e.clientX);
-            let posY = scaleByPixelRatio(e.clientY);
-            let color = generateColor();
-            updateFrame();
-            updatePointerMoveData(pointer, posX, posY, color);
-            document.body.removeEventListener('mousemove', handleFirstMouseMove);
-        });
-
-        window.addEventListener('mousemove', e => {
+        const handleMouseMove = e => {
             let pointer = pointers[0];
             let posX = scaleByPixelRatio(e.clientX);
             let posY = scaleByPixelRatio(e.clientY);
             let color = pointer.color;
             updatePointerMoveData(pointer, posX, posY, color);
-        });
+        };
 
-        document.body.addEventListener('touchstart', function handleFirstTouchStart(e) {
-            const touches = e.targetTouches;
-            let pointer = pointers[0];
-            for (let i = 0; i < touches.length; i++) {
-                let posX = scaleByPixelRatio(touches[i].clientX);
-                let posY = scaleByPixelRatio(touches[i].clientY);
-                updateFrame();
-                updatePointerDownData(pointer, touches[i].identifier, posX, posY);
-            }
-            document.body.removeEventListener('touchstart', handleFirstTouchStart);
-        });
-
-        window.addEventListener('touchstart', e => {
+        const handleTouchStart = e => {
             const touches = e.targetTouches;
             let pointer = pointers[0];
             for (let i = 0; i < touches.length; i++) {
@@ -1003,32 +985,44 @@ function SplashCursor({
                 let posY = scaleByPixelRatio(touches[i].clientY);
                 updatePointerDownData(pointer, touches[i].identifier, posX, posY);
             }
-        });
+        };
 
-        window.addEventListener(
-            'touchmove',
-            e => {
-                const touches = e.targetTouches;
-                let pointer = pointers[0];
-                for (let i = 0; i < touches.length; i++) {
-                    let posX = scaleByPixelRatio(touches[i].clientX);
-                    let posY = scaleByPixelRatio(touches[i].clientY);
-                    updatePointerMoveData(pointer, posX, posY, pointer.color);
-                }
-            },
-            false
-        );
+        const handleTouchMove = e => {
+            const touches = e.targetTouches;
+            let pointer = pointers[0];
+            for (let i = 0; i < touches.length; i++) {
+                let posX = scaleByPixelRatio(touches[i].clientX);
+                let posY = scaleByPixelRatio(touches[i].clientY);
+                updatePointerMoveData(pointer, posX, posY, pointer.color);
+            }
+        };
 
-        window.addEventListener('touchend', e => {
+        const handleTouchEnd = e => {
             const touches = e.changedTouches;
             let pointer = pointers[0];
             for (let i = 0; i < touches.length; i++) {
                 updatePointerUpData(pointer);
             }
-        });
+        };
+
+        window.addEventListener('mousedown', handleMouseDown);
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('touchstart', handleTouchStart);
+        window.addEventListener('touchmove', handleTouchMove, false);
+        window.addEventListener('touchend', handleTouchEnd);
 
         updateFrame();
+
+        return () => {
+            if (requestID) cancelAnimationFrame(requestID);
+            window.removeEventListener('mousedown', handleMouseDown);
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('touchstart', handleTouchStart);
+            window.removeEventListener('touchmove', handleTouchMove);
+            window.removeEventListener('touchend', handleTouchEnd);
+        };
     }, [
+        isMobile,
         SIM_RESOLUTION,
         DYE_RESOLUTION,
         CAPTURE_RESOLUTION,
@@ -1044,6 +1038,8 @@ function SplashCursor({
         BACK_COLOR,
         TRANSPARENT
     ]);
+
+    if (isMobile) return null;
 
     return (
         <div className="fixed top-0 left-0 z-50 pointer-events-none w-full h-full">

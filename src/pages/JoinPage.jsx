@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaDiscord, FaYoutube, FaTiktok, FaReddit, FaSpotify, FaCopy, FaCheck } from 'react-icons/fa';
+import { FaDiscord, FaYoutube, FaTiktok, FaVoteYea, FaSpotify, FaCopy, FaCheck } from 'react-icons/fa';
 import { FiServer, FiMapPin, FiCpu, FiLayers } from 'react-icons/fi';
 import { fetchServerStats } from '../utils/serverStats';
 import { useContent } from '../context/ContentContext';
@@ -60,7 +60,7 @@ const JoinPage = () => {
             'Discord': { icon: FaDiscord, color: 'hover:text-[#5865F2]' },
             'YouTube': { icon: FaYoutube, color: 'hover:text-[#FF0000]' },
             'TikTok': { icon: FaTiktok, color: 'hover:text-[#00f2ea]' },
-            'Reddit': { icon: FaReddit, color: 'hover:text-[#FF4500]' },
+            'MinecraftServer': { icon: FaVoteYea, color: 'hover:text-aurora-green' },
             'Spotify': { icon: FaSpotify, color: 'hover:text-[#1DB954]' }
         };
         const meta = platformMap[link.platform] || { icon: FiLayers, color: 'hover:text-white' };
@@ -71,6 +71,14 @@ const JoinPage = () => {
             link: link.url
         };
     });
+
+    const [copiedSocial, setCopiedSocial] = useState(null);
+
+    const handleCopySocial = (url, name) => {
+        navigator.clipboard.writeText(url);
+        setCopiedSocial(name);
+        setTimeout(() => setCopiedSocial(null), 2000);
+    };
 
     return (
         <div className="min-h-screen pt-32 pb-20 px-6 relative overflow-hidden flex flex-col items-center justify-center">
@@ -96,7 +104,7 @@ const JoinPage = () => {
                     transition={{ duration: 0.8 }}
                     className="text-center mb-16"
                 >
-                    <h1 className="text-5xl md:text-7xl font-bold font-heading mb-6 tracking-wider">
+                    <h1 className="text-4xl md:text-7xl font-bold font-heading mb-6 tracking-wider">
                         <span className="bg-clip-text text-transparent bg-gradient-to-r from-aurora-green via-white to-purple-400 animate-gradient-x">
                             JOIN THE ADVENTURE
                         </span>
@@ -111,14 +119,14 @@ const JoinPage = () => {
                     transition={{ delay: 0.2, duration: 0.6 }}
                     className="max-w-4xl mx-auto mb-16"
                 >
-                    <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+                    <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-4 md:p-8 shadow-2xl relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-64 h-64 bg-aurora-green/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
 
                         <div className="relative z-10 flex justify-center">
                             {/* Total Joined */}
                             <div className="bg-white/5 rounded-2xl p-8 border border-white/5 flex items-center justify-between max-w-md w-full shadow-lg shadow-aurora-green/5">
                                 <div>
-                                    <div className="text-white/40 text-sm font-bold uppercase tracking-wider mb-2">Total Joined</div>
+                                    <div className="text-white/80 text-sm font-bold uppercase tracking-wider mb-2">Total Joined</div>
                                     <div className="text-4xl font-bold text-white font-heading">{content.joinedPlayers || "225+"} players</div>
                                 </div>
                                 <div className="w-14 h-14 rounded-full bg-aurora-green/10 flex items-center justify-center text-aurora-green shadow-inner">
@@ -135,7 +143,7 @@ const JoinPage = () => {
                         initial={{ opacity: 0, x: -30 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.2, duration: 0.6 }}
-                        className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-10 shadow-2xl relative group overflow-hidden h-full flex flex-col justify-between"
+                        className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-4 md:p-10 shadow-2xl relative group overflow-hidden h-full flex flex-col justify-between"
                     >
                         <div className="absolute inset-0 bg-gradient-to-br from-aurora-green/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
@@ -150,7 +158,7 @@ const JoinPage = () => {
                             <div className="grid sm:grid-cols-2 gap-6 mb-10">
                                 {serverDetails.map((detail, index) => (
                                     <div key={index} className="bg-white/5 rounded-2xl p-5 border border-white/5 hover:border-aurora-green/30 transition-all hover:bg-white/10">
-                                        <div className="text-white/40 mb-2 text-sm uppercase tracking-wider font-semibold">{detail.label}</div>
+                                        <div className="text-white/80 mb-2 text-sm uppercase tracking-wider font-semibold">{detail.label}</div>
                                         <div className="text-white font-bold text-xl mb-1">{detail.value}</div>
                                         <div className="text-aurora-green text-xs font-medium bg-aurora-green/10 py-1 px-2 rounded-lg inline-block">{detail.sub}</div>
                                     </div>
@@ -161,21 +169,21 @@ const JoinPage = () => {
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <button
                                     onClick={handleCopyJava}
-                                    className="w-full bg-aurora-green hover:bg-white hover:text-black text-aurora-dark font-bold py-5 rounded-2xl transition-all duration-300 flex items-center justify-center gap-3 group/btn shadow-[0_0_20px_rgba(0,210,160,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]"
+                                    className="w-full bg-aurora-green hover:bg-white hover:text-black text-aurora-dark font-bold py-4 md:py-5 rounded-2xl transition-all duration-300 flex items-center justify-center gap-3 group/btn shadow-[0_0_20px_rgba(0,210,160,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]"
                                 >
-                                    <span className="text-xl tracking-wider font-heading uppercase">
+                                    <span className="text-lg md:text-xl tracking-wider font-heading uppercase">
                                         {copiedJava ? "Java Copied!" : "Copy Java IP"}
                                     </span>
-                                    {copiedJava ? <FaCheck size={20} /> : <FaCopy size={20} className="group-hover/btn:scale-110 transition-transform" />}
+                                    {copiedJava ? <FaCheck size={18} /> : <FaCopy size={18} className="group-hover/btn:scale-110 transition-transform" />}
                                 </button>
                                 <button
                                     onClick={handleCopyBedrock}
-                                    className="w-full bg-black/40 hover:bg-aurora-green hover:text-aurora-dark text-white font-bold py-5 rounded-2xl transition-all duration-300 flex items-center justify-center gap-3 group/btn border border-white/10 hover:border-aurora-green shadow-xl shadow-black/20"
+                                    className="w-full bg-black/40 hover:bg-aurora-green hover:text-aurora-dark text-white font-bold py-4 md:py-5 rounded-2xl transition-all duration-300 flex items-center justify-center gap-3 group/btn border border-white/10 hover:border-aurora-green shadow-xl shadow-black/20"
                                 >
-                                    <span className="text-xl tracking-wider font-heading uppercase">
+                                    <span className="text-lg md:text-xl tracking-wider font-heading uppercase">
                                         {copiedBedrock ? "Bedrock Copied!" : "Copy Bedrock IP"}
                                     </span>
-                                    {copiedBedrock ? <FaCheck size={20} /> : <FaCopy size={20} className="group-hover/btn:scale-110 transition-transform" />}
+                                    {copiedBedrock ? <FaCheck size={18} /> : <FaCopy size={18} className="group-hover/btn:scale-110 transition-transform" />}
                                 </button>
                             </div>
                         </div>
@@ -188,11 +196,11 @@ const JoinPage = () => {
                         transition={{ delay: 0.4, duration: 0.6 }}
                         className="space-y-8"
                     >
-                        <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden h-full">
+                        <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-4 md:p-10 shadow-2xl relative overflow-hidden h-full">
                             <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
 
                             <h3 className="text-3xl font-bold text-white mb-6 font-heading relative z-10">Connect With Us</h3>
-                            <p className="text-white/60 leading-relaxed mb-10 relative z-10 text-lg">
+                            <p className="text-white leading-relaxed mb-10 relative z-10 text-lg">
                                 Join our thriving community across all platforms. Stay updated with the latest news,
                                 watch community highlights, and listen to our curated vibes.
                             </p>
@@ -200,32 +208,32 @@ const JoinPage = () => {
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10">
                                 {socials.map((social, index) => (
-                                    <motion.a
+                                    <motion.button
                                         key={index}
-                                        href={social.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
+                                        onClick={() => window.open(social.link, '_blank')}
                                         whileHover={{ scale: 1.02, y: -2 }}
-                                        className={`flex items-center gap-4 p-5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl transition-all group shadow-lg hover:shadow-xl ${social.name === 'Discord' ? 'sm:col-span-2 bg-[#5865F2]/20 hover:bg-[#5865F2]/30 border-[#5865F2]/30 shadow-[#5865F2]/10' : ''}`}
+                                        className={`flex items-center gap-4 p-5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl transition-all group shadow-lg hover:shadow-xl text-left ${social.name === 'Discord' ? 'sm:col-span-2 bg-[#5865F2]/20 hover:bg-[#5865F2]/30 border-[#5865F2]/30 shadow-[#5865F2]/10' : ''}`}
                                     >
-                                        <span className={`text-3xl text-white/50 group-hover:text-white transition-colors duration-300 ${social.color}`}>
+                                        <span className={`text-3xl text-white/90 group-hover:text-white transition-colors duration-300 ${social.color}`}>
                                             <social.icon />
                                         </span>
                                         <div className="flex-grow">
                                             <div className="text-white font-bold text-lg group-hover:text-aurora-green transition-colors">{social.name}</div>
-                                            <div className="text-white/40 text-xs uppercase tracking-wider font-semibold">Follow Us</div>
+                                            <div className="text-white/70 text-xs uppercase tracking-wider font-semibold">
+                                                Follow Us
+                                            </div>
                                         </div>
                                         {social.name === 'Discord' && (
-                                            <div className="ml-auto px-4 py-2 bg-[#5865F2] hover:bg-[#4752C4] text-white text-sm font-bold rounded-xl shadow-[0_0_15px_rgba(88,101,242,0.4)] transition-colors">
+                                            <div className="ml-auto px-4 py-2 text-white text-sm font-bold rounded-xl shadow-[0_0_15px_rgba(88,101,242,0.4)] transition-colors bg-[#5865F2] hover:bg-[#4752C4]">
                                                 JOIN NOW
                                             </div>
                                         )}
                                         {social.name !== 'Discord' && (
-                                            <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                            <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <div className="w-2 h-2 rounded-full bg-aurora-green animate-pulse" />
                                             </div>
                                         )}
-                                    </motion.a>
+                                    </motion.button>
                                 ))}
                             </div>
                         </div>

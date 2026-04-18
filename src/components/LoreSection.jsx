@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, BookOpen, Maximize2, Sparkles, ExternalLink, HelpCircle } from 'lucide-react';
+import useIsMobile from '../hooks/useIsMobile';
 
 const LoreSection = () => {
+    const isMobile = useIsMobile();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const toggleModal = () => setIsModalOpen(!isModalOpen);
 
-    // Generate random particles for the background effect
-    const particles = Array.from({ length: 15 });
+    // Generate random particles for the background effect (disabled on mobile)
+    const particles = isMobile ? [] : Array.from({ length: 15 });
 
     return (
         <section className="relative pt-4 md:pt-8 pb-12 md:pb-20 px-4 overflow-hidden">
@@ -50,10 +52,10 @@ const LoreSection = () => {
                         <Sparkles size={14} />
                         Divine Knowledge
                     </div>
-                    <h2 className="text-5xl md:text-7xl font-heading mb-6 text-white tracking-tight">
+                    <h2 className="text-4xl md:text-7xl font-heading mb-6 text-white tracking-tight">
                         The Will of Aurora
                     </h2>
-                    <p className="text-xl md:text-2xl font-body text-aurora-text/80 max-w-2xl mx-auto italic leading-relaxed">
+                    <p className="text-lg md:text-2xl font-body text-aurora-text/80 max-w-2xl mx-auto italic leading-relaxed px-4">
                         "Ancient texts speak of a light that never fades, and a world where every block tells a story of gods and men."
                     </p>
                 </motion.div>
@@ -108,7 +110,7 @@ const LoreSection = () => {
                                     href="https://online.anyflip.com/ebmkm/buzz/mobile/index.html" 
                                     target="_blank" 
                                     rel="noopener noreferrer"
-                                    className="hidden md:flex items-center gap-2 text-white/50 hover:text-white transition-colors text-xs font-bold uppercase tracking-widest"
+                                    className="hidden md:flex items-center gap-2 text-white/90 hover:text-white transition-colors text-xs font-bold uppercase tracking-widest"
                                 >
                                     <ExternalLink size={14} />
                                     Open Direct Link
@@ -119,7 +121,7 @@ const LoreSection = () => {
                             <div className="absolute bottom-4 right-4 z-30 opacity-40 group-hover:opacity-100 transition-opacity hidden md:block">
                                 <div className="group/help relative">
                                     <HelpCircle size={20} className="text-white/30 cursor-help" />
-                                    <div className="absolute bottom-full right-0 mb-2 w-64 p-3 bg-black/90 border border-white/10 rounded-xl text-[10px] text-white/60 leading-relaxed pointer-events-none opacity-0 group-hover/help:opacity-100 transition-opacity">
+                                    <div className="absolute bottom-full right-0 mb-2 w-64 p-3 bg-black/90 border border-white/10 rounded-xl text-[10px] text-white leading-relaxed pointer-events-none opacity-0 group-hover/help:opacity-100 transition-opacity">
                                         If the chronicle fails to load, your browser may be blocking the divine connection. Try the **Direct Link** or check your shield/extension settings.
                                     </div>
                                 </div>
@@ -134,9 +136,9 @@ const LoreSection = () => {
                         whileHover={{ scale: 1.05, y: -5 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={toggleModal}
-                        className="flex items-center gap-4 bg-gradient-to-r from-aurora-green to-aurora-blue text-black font-heading tracking-wider py-5 px-12 rounded-2xl shadow-[0_15px_40px_rgba(0,210,160,0.4)] hover:shadow-[0_20px_60px_rgba(0,210,160,0.6)] transition-all duration-300 group"
+                        className="flex items-center gap-4 bg-gradient-to-r from-aurora-green to-aurora-blue text-black font-heading tracking-wider py-4 md:py-5 px-8 md:px-12 rounded-2xl shadow-[0_15px_40px_rgba(0,210,160,0.4)] hover:shadow-[0_20px_60px_rgba(0,210,160,0.6)] transition-all duration-300 group"
                     >
-                        <BookOpen size={26} className="group-hover:rotate-12 transition-transform" />
+                        <BookOpen size={22} className="group-hover:rotate-12 transition-transform md:size-[26px]" />
                         READ THE LEGENDS
                     </motion.button>
                 </div>
@@ -154,7 +156,7 @@ const LoreSection = () => {
                         {/* Close Button */}
                         <button 
                             onClick={toggleModal}
-                            className="absolute top-6 right-6 text-white/50 hover:text-white transition-all z-[10000] bg-white/5 hover:bg-white/20 p-3 rounded-full"
+                            className="absolute top-6 right-6 text-white hover:text-white transition-all z-[10000] bg-white/5 hover:bg-white/20 p-3 rounded-full"
                         >
                             <X size={32} />
                         </button>

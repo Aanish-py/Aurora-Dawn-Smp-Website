@@ -14,6 +14,12 @@ const AnnouncementsPage = () => {
     const [activeCategory, setActiveCategory] = useState("All");
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
+    const [visibleCount, setVisibleCount] = useState(4);
+
+    // Reset visibility when filters change
+    React.useEffect(() => {
+        setVisibleCount(4);
+    }, [activeCategory, searchQuery]);
 
     const filteredNews = (newsData || []).filter(item => {
         const matchesCategory = activeCategory === "All" || item.category === activeCategory;
@@ -48,10 +54,10 @@ const AnnouncementsPage = () => {
                             transition={{ delay: 0.5, duration: 1 }}
                             className="h-1.5 bg-aurora-green mb-6"
                         />
-                        <h1 className="text-4xl md:text-8xl font-heading font-black text-aurora-green tracking-tighter uppercase drop-shadow-[0_4px_0_rgba(0,0,0,0.5)]">
+                        <h1 className="text-3xl md:text-8xl font-heading font-black text-aurora-green tracking-tighter uppercase drop-shadow-[0_4px_0_rgba(0,0,0,0.5)]">
                             Announcements
                         </h1>
-                        <p className="text-xl text-white/40 font-medium max-w-lg border-l-4 border-aurora-blue/40 pl-6 py-2 mt-4">
+                        <p className="text-xl text-white font-medium max-w-lg border-l-4 border-aurora-blue/40 pl-6 py-2 mt-4">
                             The latest news, updates and community events from the Aurora SMP network.
                         </p>
                     </motion.div>
@@ -65,7 +71,7 @@ const AnnouncementsPage = () => {
                     >
                         <div className="absolute inset-0 bg-gradient-to-r from-aurora-green/20 to-aurora-blue/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                         <div className="relative bg-white/5 backdrop-blur-md border border-white/10 rounded-full flex items-center px-4 py-2.5 group-focus-within:border-aurora-green/50 transition-colors">
-                            <Search className="w-4 h-4 text-white/40 mr-3" />
+                            <Search className="w-4 h-4 text-white/80 mr-3" />
                             <input
                                 type="text"
                                 placeholder="Search archives..."
@@ -92,7 +98,7 @@ const AnnouncementsPage = () => {
                                 className={`px-5 py-2 rounded text-xs font-black uppercase tracking-tighter transition-all duration-200 border-2
                                     ${activeCategory === cat
                                         ? 'bg-aurora-green border-aurora-green text-black shadow-[0_4px_0_#008a6a]'
-                                        : 'bg-black/40 border-white/10 text-white/40 hover:text-white hover:border-white/30'
+                                        : 'bg-black/40 border-white/10 text-white/80 hover:text-white hover:border-white/30'
                                     }
                                 `}
                             >
@@ -104,7 +110,7 @@ const AnnouncementsPage = () => {
                     {/* End of Archives indicator */}
                     <div className="flex items-center gap-2 self-start md:self-center">
                         <div className="w-2 h-2 rounded-full bg-aurora-green animate-pulse" />
-                        <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em]">Latest Chronicles</span>
+                        <span className="text-[10px] font-black text-white/80 uppercase tracking-[0.2em]">Latest Chronicles</span>
                     </div>
                 </motion.div>
 
@@ -112,7 +118,7 @@ const AnnouncementsPage = () => {
                 <div className="flex flex-col border border-white/10 rounded-lg overflow-hidden bg-[#0c0c0c] shadow-2xl">
                     <AnimatePresence mode='popLayout'>
                         {filteredNews.length > 0 ? (
-                            filteredNews.map((news, idx) => (
+                            filteredNews.slice(0, visibleCount).map((news, idx) => (
                                 <AnnouncementRow
                                     key={news.id}
                                     news={news}
@@ -123,21 +129,26 @@ const AnnouncementsPage = () => {
                         ) : (
                             <div className="py-20 text-center">
                                 <Sparkles className="w-12 h-12 text-white/20 mx-auto mb-4" />
-                                <p className="text-white/40 font-heading text-xl">No chronicles found.</p>
+                                <p className="text-white/80 font-heading text-xl">No chronicles found.</p>
                             </div>
                         )}
                     </AnimatePresence>
                 </div>
 
                 {/* Load More Trigger */}
-                <div className="mt-20 flex justify-center">
-                    <button className="group relative px-8 py-3 overflow-hidden rounded-full">
-                        <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-                        <span className="relative text-xs font-bold text-white/40 group-hover:text-white uppercase tracking-[0.2em] transition-colors">
-                            View All Archives
-                        </span>
-                    </button>
-                </div>
+                {filteredNews.length > visibleCount && (
+                    <div className="mt-20 flex justify-center">
+                        <button 
+                            onClick={() => setVisibleCount(prev => prev + 4)}
+                            className="group relative px-8 py-3 overflow-hidden rounded-full"
+                        >
+                            <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                            <span className="relative text-xs font-bold text-white/80 group-hover:text-white uppercase tracking-[0.2em] transition-colors">
+                                View All Archives
+                            </span>
+                        </button>
+                    </div>
+                )}
 
             </div>
 
@@ -156,11 +167,11 @@ const AnnouncementsPage = () => {
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.9, opacity: 0, y: 20 }}
                             onClick={(e) => e.stopPropagation()}
-                            className="relative w-full max-w-4xl max-h-[85vh] overflow-y-auto glass rounded-3xl border border-white/10 shadow-2xl p-8 scrollbar-thin scrollbar-thumb-white/10"
+                            className="relative w-full max-w-4xl max-h-[85vh] overflow-y-auto glass rounded-3xl border border-white/10 shadow-2xl p-4 md:p-8 scrollbar-thin scrollbar-thumb-white/10"
                         >
                             <button
                                 onClick={() => setSelectedAnnouncement(null)}
-                                className="absolute top-6 right-6 p-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white/40 hover:text-white transition-all z-20"
+                                className="absolute top-6 right-6 p-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white/80 hover:text-white transition-all z-20"
                             >
                                 <X className="w-6 h-6" />
                             </button>
@@ -175,30 +186,30 @@ const AnnouncementsPage = () => {
                                         <span className="text-xs font-bold text-white/20 uppercase tracking-widest">•</span>
                                         <span className="text-xs font-black text-aurora-blue/60 uppercase tracking-widest">Official Post</span>
                                     </div>
-                                    <h2 className="text-4xl md:text-6xl font-heading text-white leading-tight uppercase tracking-tighter">
+                                    <h2 className="text-3xl md:text-6xl font-heading text-white leading-tight uppercase tracking-tighter">
                                         {selectedAnnouncement.title}
                                     </h2>
                                     <div className="flex flex-wrap items-center gap-6 pt-4 border-t border-white/5">
                                         <div className="flex items-center gap-2">
                                             <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden">
-                                                <User className="w-4 h-4 text-white/40" />
+                                                <User className="w-4 h-4 text-white/80" />
                                             </div>
-                                            <span className="text-sm font-bold text-white/40 uppercase tracking-widest">Written by <span className="text-aurora-green">{selectedAnnouncement.author}</span></span>
+                                            <span className="text-sm font-bold text-white/80 uppercase tracking-widest">Written by <span className="text-aurora-green">{selectedAnnouncement.author}</span></span>
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <Calendar className="w-4 h-4 text-aurora-blue" />
-                                            <span className="text-sm font-black text-white/40">{selectedAnnouncement.date}</span>
+                                            <span className="text-sm font-black text-white/80">{selectedAnnouncement.date}</span>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Content Body */}
                                 <div className="prose prose-invert max-w-none">
-                                    <p className="text-xl text-white/70 leading-relaxed italic mb-8 border-l-4 border-aurora-green pl-6 py-2 bg-aurora-green/5 rounded-r-lg">
+                                    <p className="text-lg md:text-xl text-white leading-relaxed italic mb-8 border-l-4 border-aurora-green pl-4 md:pl-6 py-2 bg-aurora-green/5 rounded-r-lg">
                                         {selectedAnnouncement.excerpt}
                                     </p>
                                     
-                                    <div className="space-y-6 text-white/60 leading-relaxed text-lg whitespace-pre-wrap">
+                                    <div className="space-y-6 text-white leading-relaxed text-lg whitespace-pre-wrap">
                                         {selectedAnnouncement.content || "No detailed content provided."}
                                     </div>
                                 </div>
